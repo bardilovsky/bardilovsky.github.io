@@ -261,15 +261,19 @@
         }
 
         .card {
-          flex-direction: row;
-          justify-content: flex-start;
+          display: grid;
+          grid-template-columns: 64px auto;
+          justify-content: center;
+          align-items: center;
+          justify-items: start;
           padding: 20px 22px;
           gap: 20px;
-          text-align: center;
+          text-align: left;
         }
 
         .card-emoji {
           font-size: 48px;
+          justify-self: center;
         }
       }
     </style>
