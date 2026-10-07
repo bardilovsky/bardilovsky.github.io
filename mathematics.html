@@ -93,7 +93,9 @@
         font-size: clamp(18px, 4.8vw, 44px);
         letter-spacing: -0.01em;
         text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       .header-sub {
@@ -295,7 +297,7 @@
 
         .header {
           padding: 22px 14px 22px 14px;
-          padding-bottom: 58px;
+          padding-bottom: 38px;
           border-radius: 32px 32px 32px 6px;
           margin-bottom: 24px;
         }
@@ -305,13 +307,6 @@
           font-size: 0.8rem;
           padding: 7px 14px 7px 16px;
           border-radius: 0 16px 0 6px;
-        }
-
-        /* На узких экранах разрешаем заголовку переноситься,
-           чтобы он не выходил за пределы макета */
-        .header h1 {
-          white-space: normal;
-          word-break: break-word;
         }
 
         .spoiler summary {
