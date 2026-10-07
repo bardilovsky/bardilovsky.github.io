@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Виртуальный кабинет математики</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Контейнер для частиц — фона в виде паутинки */
+      #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        /* позади всего контента */
+        pointer-events: auto;
+        /* чтобы клики проходили сквозь частицы */
+        background: transparent;
+        /* градиент body будет виден */
+      }
+
+      body {
+        font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+        background: linear-gradient(145deg, #e9f0ff 0%, #d0e0f5 100%);
+        min-height: 100vh;
+        padding: 20px 16px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        /* чтобы body был над #particles-js, но контент выше */
+      }
+
+      .wrapper {
+        max-width: 900px;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 5;
+        /* контент точно поверх частиц */
+      }
+
+      /* Шапка с градиентом */
+      .header {
+        background: linear-gradient(135deg, #1e3a6d, #2c5cbf, #4d7edd);
+        background-size: 200% 200%;
+        padding: 28px 20px;
+        border-radius: 40px 40px 40px 8px;
+        margin-bottom: 26px;
+        box-shadow: 0 12px 28px rgba(16, 56, 130, 0.25);
+        border: 1px solid rgba(215, 235, 255, 0.3);
+        text-align: center;
+        transition: box-shadow 0.2s;
+        pointer-events: auto;
+      }
+
+      .header h1 {
+        color: #f3f8ff;
+        font-weight: 700;
+        font-size: clamp(28px, 8vw, 48px);
+        letter-spacing: -0.01em;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        word-break: break-word;
+      }
+
+      .header-sub {
+        color: #d9e6ff;
+        margin-top: 8px;
+        font-size: 1.1rem;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+
+      /* Контейнер спойлеров (details) */
+      .accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      /* Стилизация элемента details как спойлера */
+      .spoiler {
+        background: rgba(245, 250, 255, 0.7);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 28px;
+        box-shadow: 0 8px 18px rgba(30, 58, 110, 0.15);
+        border: 1px solid rgba(130, 170, 230, 0.4);
+        transition: box-shadow 0.25s ease;
+      }
+
+      .spoiler:hover {
+        box-shadow: 0 10px 24px rgba(50, 90, 170, 0.25);
+        border-color: #8ab0ff;
+      }
+
+      /* Заголовок спойлера — summary */
+      .spoiler summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(105deg, #85a8db, #6c93d5);
+        padding: 18px 24px;
+        border-radius: 28px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #0a1a2e;
+        cursor: pointer;
+        transition: background 0.3s, border-radius 0.2s, box-shadow 0.2s;
+        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #c8dcff;
+        letter-spacing: -0.01em;
+        list-style: none;
+        /* убираем стандартный треугольник */
+      }
+
+      .spoiler summary::-webkit-details-marker {
+        display: none;
+        /* скрываем маркер в WebKit */
+      }
+
+      /* Собственная иконка-стрелка */
+      .spoiler summary .spoiler-icon {
+        font-size: 1.8rem;
+        line-height: 1;
+        transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1);
+        color: #0f244a;
+        margin-left: 8px;
+        user-select: none;
+      }
+
+      /* При открытом спойлере меняем стили summary и поворачиваем стрелку */
+      .spoiler[open] summary {
+        border-radius: 28px 28px 22px 22px;
+        background: linear-gradient(105deg, #6c8fd3, #5b7ec7);
+        box-shadow: inset 0 1px 3px #fff3, 0 6px 10px rgba(20, 50, 110, 0.2);
+      }
+
+      .spoiler[open] summary .spoiler-icon {
+        transform: rotate(180deg);
+      }
+
+      /* Анимация раскрытия контента (CSS-only) */
+      .spoiler-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        overflow: hidden;
+        transition: grid-template-rows 0.45s ease-in-out;
+        background: rgba(240, 247, 255, 0.5);
+        border-radius: 0 0 28px 28px;
+        color: #0f1e2b;
+      }
+
+      /* Когда details открыт, контенту задаётся достаточная высота */
+      .spoiler[open] .spoiler-content {
+        grid-template-rows: 1fr;
+      }
+
+      .spoiler-content-inner {
+        padding: 8px 26px 26px 26px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        border-top: 1px dashed #a0c0f0;
+      }
+
+      /* Плейсхолдер текст */
+      .spoiler-text {
+        background: rgba(170, 200, 250, 0.25);
+        padding: 16px 20px;
+        border-radius: 24px;
+        border-left: 6px solid #2c5cbf;
+        color: #0f1f30;
+        font-style: italic;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        box-shadow: inset 0 1px 4px #c4dcff;
+      }
+
+      .spoiler-text p {
+        margin-bottom: 10px;
+      }
+
+      .spoiler-text p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Таблица учебников: адаптивно сжимается под доступную ширину */
+      .spoiler-text table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+      }
+
+      .spoiler-text table td {
+        vertical-align: top;
+        padding: 6px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      /* Обложка учебника: на десктопе — оригинальные 220x286,
+         при нехватке места уменьшается пропорционально */
+      .book {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 220px;
+        margin: 0 auto;
+      }
+
+      .spoiler-text table p {
+        margin: 6px 0 0;
+        font-size: clamp(0.8rem, 2.6vw, 1rem);
+        line-height: 1.35;
+      }
+
+      /* Картинки в спойлерах — не выходят за пределы экрана */
+      .spoiler-text img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Центрированная картинка в блоке текста */
+      .centered-media {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Видеозал: iframe адаптивно вписывается в доступную ширину */
+      .spoiler-text iframe {
+        display: block;
+        width: 100%;
+        max-width: 560px;
+        aspect-ratio: 16 / 9;
+        height: auto;
+        margin: 0 auto;
+        border: 0;
+      }
+
+      /* Длинные строки и неразрывные пробелы не должны распирать блок */
+      .spoiler-text p,
+      .spoiler-text a,
+      .spoiler-text span {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .spoiler-text hr {
+        border: 0;
+        border-top: 1px solid #a0c0f0;
+        margin: 14px 0;
+      }
+
+      /* Адаптивность */
+      @media (max-width: 600px) {
+        body {
+          padding: 12px 10px 30px;
+        }
+
+        .header {
+          padding: 22px 14px;
+          border-radius: 32px 32px 32px 6px;
+          margin-bottom: 24px;
+        }
+
+        .spoiler summary {
+          padding: 16px 18px;
+          font-size: 1.3rem;
+        }
+
+        .spoiler summary .spoiler-icon {
+          font-size: 1.6rem;
+        }
+
+        .spoiler-content-inner {
+          padding: 8px 18px 22px 18px;
+          font-size: 1rem;
+        }
+
+        .spoiler-text {
+          padding: 14px 16px;
+        }
+
+        .spoiler-text table {
+          min-width: 0;
+        }
+
+        .spoiler-text table td {
+          padding: 4px;
+        }
+
+        /* На узких экранах обложки сжимаются пропорционально,
+           но не больше доступной ширины ячейки */
+        .book {
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .spoiler summary {
+          font-size: 1.2rem;
+          padding: 14px 14px;
+        }
+      }
+
+      /* Футер */
+      .footer-note {
+        margin-top: 20px;
+        text-align: center;
+        color: #26405f;
+        opacity: 0.8;
+        font-size: 0.95rem;
+      }
+
+      /* Убираем стандартный outline, добавляем свой для accessibility */
+      .spoiler summary:focus-visible {
+        outline: 3px solid #c4d8ff;
+        outline-offset: 2px;
+      }
+
+      /* Анимация появления */
+      .wrapper {
+        animation: fadeSlide 0.6s ease;
+      }
+
+      @keyframes fadeSlide {
+        0% {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- КОНТЕЙНЕР ДЛЯ ПАУТИНКИ (ЧАСТИЦ) -->
+    <div id="particles-js"></div>
+    
+    <div class="wrapper">
+      <!-- Шапка -->
+      <header class="header">
+        <h1>📐 Виртуальный кабинет математики</h1>
+        <div class="header-sub">интерактивные материалы · модели · теория</div>
+      </header>
+      
+      <!-- Аккордеон на чистом HTML+CSS с использованием <details> -->
+      <div class="accordion">
+
+        <!-- Цели и задачи работы кабинета -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">☑️ Цели и задачи работы кабинета</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p style="text-align: center;"><img class="centered-media" src="img/logo-mathematics.jpg" alt="Логотип виртуального кабинета математики"></p>
+                <p>✅ <strong>Цели и задачи работы кабинета:</strong>
+                </p>
+                <p>
+                  <strong>
+                    <strong>&bull;&nbsp;</strong>&nbsp; &nbsp; мотивирование обучения и стимулирование деятельности учащихся в рамках учебного предмета математика; <br />
+                    <strong>&bull;&nbsp;</strong>&nbsp; &nbsp; развитие любознательности у учащихся и познавательного интереса к математике; <br />
+                    <strong>&bull;&nbsp;</strong>&nbsp; &nbsp; углубление знаний по математике. </strong>
+                  <br /> &nbsp;
+                </p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Учебники по математике -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">📘 Учебники по математике</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>📚 <strong>Учебники по математике</strong></p>
+                <p>Данные материалы размещены в некоммерческих целях только для ознакомления.</p>
+                <p>Правообладатель: Издательское республиканское унитарное предприятие &laquo;Народная асвета&raquo;.</p>
+                <p></p>
+                <p><strong><span style="font-size: 1.2em;">Нажмите на обложку нужного вам учебника ниже, чтобы его скачать:</span></strong></p>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Matematika_5kl_ch1_Gerasimov_bel_2025.jpg" alt="Учебник математики 5 класс, часть 1 (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Герасімаў В.Д., Пірашкоў М.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Matematika_5kl_ch1_Gerasimov_rus_2025.jpg" alt="Учебник математики 5 класс, часть 1 (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Герасимов В.Д., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Matematika_5kl_ch2_Gerasimov_bel_2025.jpg" alt="Учебник математики 5 класс, часть 2 (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Герасімаў В.Д., Пірашкоў М.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Matematika_5kl_ch2_Gerasimov_rus_2025.jpg" alt="Учебник математики 5 класс, часть 2 (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Герасимов В.Д., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Matematika_6kl_Gerasimov_bel_2022.jpg" alt="Учебник математики 6 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Герасімаў В.Д., Пірашкоў М.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Matematika_6kl_Gerasimov_rus_2022.jpg" alt="Учебник математики 6 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Герасимов В.Д., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p></p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_7kl_Arefieva_bel_2022.jpg" alt="Учебник алгебры 7 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Арэф'ева І.Г., Пірютка А.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_7kl_Arefieva_rus_2022.jpg" alt="Учебник алгебры 7 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Арефьева И.Г., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_8kl_Arefieva_bel_2024.jpg" alt="Учебник алгебры 8 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Арэф'ева І.Г., Пірютка А.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_8kl_Arefieva_rus_2024.jpg" alt="Учебник алгебры 8 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Арефьева И.Г., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_9kl_Arefieva_bel_2019.jpg" alt="Учебник алгебры 9 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Арэф'ева І.Г., Пірютка А.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_9kl_Arefieva_rus_2019.jpg" alt="Учебник алгебры 9 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Арефьева И.Г., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_10kl_Arefieva_bel_2019.jpg" alt="Учебник алгебры 10 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Арэф'ева І.Г., Пірютка А.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_10kl_Arefieva_rus_2019.jpg" alt="Учебник алгебры 10 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Арефьева И.Г., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_11kl_Arefieva_bel_2020.jpg" alt="Учебник алгебры 11 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Арэф'ева І.Г., Пірютка А.М.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Algebra_11kl_Arefieva_rus_2020.jpg" alt="Учебник алгебры 11 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Арефьева И.Г., Пирютко О.Н.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p></p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_7kl_Kazakov_bel_2022.jpg" alt="Учебник геометрии 7 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Казакоў В.В., Адамовіч Н.В.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_7kl_Kazakov_rus_2022.jpg" alt="Учебник геометрии 7 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Казаков В.В., Адамович Н.В.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_8kl_Kazakov_bel_2024.jpg" alt="Учебник геометрии 8 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Казакоў В.В., Адамовіч Н.В.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_8kl_Kazakov_rus_2024.jpg" alt="Учебник геометрии 8 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Казаков В.В., Адамович Н.В.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_9kl_Kazakov_bel_2025.jpg" alt="Учебник геометрии 9 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Казакоў В.В., Адамовіч Н.В.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_9kl_Kazakov_rus_2025.jpg" alt="Учебник геометрии 9 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Казаков В.В., Адамович Н.В.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_10kl_Latotin_bel_2020.jpg" alt="Учебник геометрии 10 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Латоцін Л.А., Чабатароўскі Б.Д.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_10kl_Latotin_rus_2020.jpg" alt="Учебник геометрии 10 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Латотин Л.А., Чеботаревский Б.Д.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_11kl_Latotin_bel_2020.jpg" alt="Учебник геометрии 11 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Латоцін Л.А., Чабатароўскі Б.Д.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/mathematics/Geometriya_11kl_Latotin_rus_2020.jpg" alt="Учебник геометрии 11 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Латотин Л.А., Чеботаревский Б.Д.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p></p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Виртуальная лаборатория -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">🔬 Виртуальная лаборатория</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🧪 <strong>Виртуальная лаборатория</strong></p>
+                <p>Интерактивные модели и инструменты для наглядного изучения математики.</p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Базовая школа</strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">&nbsp; &nbsp; <strong>&bull;</strong>
+                    <strong>&nbsp; <a href="#" target="_blank">
+                        <span style="color: #000000;">5–6 классы. Наглядная математика</span>
+                      </a>
+                    </strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">&nbsp; &nbsp; <strong>&bull;</strong>
+                    <strong>&nbsp; <a href="#" target="_blank">
+                        <span style="color: #000000;">7–9 классы. Наглядная геометрия</span>
+                      </a>
+                    </strong>
+                  </span>
+                </p>
+                <p>&nbsp; &nbsp;</p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Средняя школа</strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">&nbsp; &nbsp; <strong>&bull;</strong>
+                    <strong>&nbsp; <a href="#" target="_blank">
+                        <span style="color: #000000;">10–11 классы. Интерактивная стереометрия</span>
+                      </a>
+                    </strong>
+                  </span>
+                </p>
+                <p>Данные материалы размещены в некоммерческих целях только для ознакомления.</p>
+                <p>&nbsp; &nbsp;</p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Методические разработки по математике -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">📝 Методические разработки по математике</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>📌 <strong>Методические разработки</strong></p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="color: #000000;">
+                    <a href="#" target="_blank">
+                      <span style="font-size: 1.2em; color: #000000;">
+                        <strong>Набор тестов по математике для тестовой системы 10-балльного мониторинга </strong>(Скачать) </span>
+                    </a>
+                  </span>
+                </p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="font-size: 1.2em;">
+                    <strong>Набор презентаций и методических разработок для проведения уроков по математике:</strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em;">
+                    <strong>&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 5 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 6 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 7 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 8 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 9 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 10 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 11 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                  </span>
+                </p>
+                <p></p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Видеозал - Математика в задачах -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">▶️ Видеозал - Математика в задачах</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>📊 <strong>Видеозал - Математика в задачах</strong></p>
+                <p style="text-align: center;"><strong><span style="font-size: 1.2em;">Наглядно &ndash; интересно &ndash; просто &ndash; понятно!</span></strong></p>
+                <p style="text-align: center;"><strong><span style="font-size: 1.2em;">Видеокурс с разбором ключевых тем и задач школьного курса математики:</span></strong></p>
+                <p style="text-align: center;"><iframe src="https://www.youtube.com/embed/_XIJwF2zPnI?si=sc79XIWUcOGdz83T" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+                
+                <p>В видеокурсе доступно и наглядно объясняются основные принципы и методы решения математических задач, разбираются типовые примеры и приёмы вычислений.&nbsp;</p>
+                
+                <p>
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &bull; Часть 1. Арифметика и алгебра</span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.1 НАТУРАЛЬНЫЕ ЧИСЛА</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.2 ДРОБИ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.3 УРАВНЕНИЯ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.4 НЕРАВЕНСТВА</span></span></a></span></strong>
+                </p>
+                
+                <p>
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &bull; Часть 2. Функции и графики</span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">2.1 ЛИНЕЙНАЯ ФУНКЦИЯ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">2.2 КВАДРАТИЧНАЯ ФУНКЦИЯ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">2.3 ПРОИЗВОДНАЯ</span></span></a></span></strong>
+                </p>
+                
+                <p>
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &bull; Часть 3. Геометрия</span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">3.1 ПЛАНИМЕТРИЯ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">3.2 СТЕРЕОМЕТРИЯ</span></span></a></span></strong>
+                </p>
+                
+                <p></p>
+                </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Фестиваль педагогического мастерства -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">✨️ Фестиваль педагогического мастерства &laquo;Творческие каникулы&raquo;</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🌟 <strong>Фестиваль педагогического мастерства &laquo;Творческие каникулы&raquo;</strong></p>
+                <p style="text-align: center;"><img class="centered-media" src="img/album/Festival_001.jpg" alt="Творческие каникулы"></p>
+
+                <p>Ежегодный<strong>&nbsp;</strong>фестиваль&nbsp;педагогического мастерства &laquo;Творческие каникулы&raquo;.</p>
+
+                <p>Тема фестиваля &mdash; &laquo;Совершенствование профессиональных компетенций педагогов по развитию личностных, метапредметных, предметных компетенций учащихся посредством учебных предметов &laquo;Физика&raquo;, &laquo;Математика&raquo; и &laquo;Астрономия&raquo;.</p>
+
+                <p>Участники&nbsp;мероприятия &mdash; педагогические работники Брестской, Витебской, Гомельской, Гродненской, Минской, Могилевской областей и г.&nbsp;Минска.</p>
+                
+                <p><a href="https://www.mogileviro.by/archives/20023" target="_blank">Отчет о VII Фестивале педагогического мастерства &laquo;Творческие каникулы&raquo;</a></p>
+                
+                <p></p>
+                </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Полезные интернет-ресурсы по математике -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">🌐 Полезные интернет-ресурсы по математике</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🔗 <strong>Полезные ссылки</strong></p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Материалы отдела физико-математических и естественнонаучных дисциплин МГОИРО:</strong>
+                  </span>
+                </p>
+                <p>
+                <span style="font-size: 1.2em; color: #000000;">
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">В помощь учителю математики</span></a><br />
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">Дидактические материалы по математике</span></a>
+                </span>
+                </p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Полезные образовательные ресурсы:</strong>
+                  </span>
+                </p>
+                <p>
+                <span style="font-size: 1.2em; color: #000000;">
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">Учи.ру — интерактивная образовательная платформа</span></a><br />
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">ЯКласс — цифровой образовательный ресурс</span></a><br />
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">Решу.by — образовательный портал для подготовки к экзаменам</span></a>
+                </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </details>        
+      </div>
+      <div class="footer-note">📐 Автор сайта: <a href="https://t.me/bardilovsky" target="_blank"><span style="color: #000000;">Бардиловский Фёдор Владимирович</span></a></div>
+    </div>
+    <!-- Подключаем библиотеку particles.js для создания фона из частиц в виде паутинки -->
+    <script src="particles.min.js"></script>
+    <!-- Инициализация паутинки в цветах сайта -->
+    <script>
+      (function() {
+        // Ждём загрузки библиотеки и DOM
+        if (typeof particlesJS === 'undefined') {
+          console.warn('particles.js не загружен. Паутинка не появится.');
+          return;
+        }
+        // Конфигурация, стилизованная под синюю гамму сайта
+        const particlesConfig = {
+          "particles": {
+            "number": {
+              "value": 100, // не слишком густо, но заметно
+              "density": {
+                "enable": true,
+                "value_area": 900
+              }
+            },
+            "color": {
+              "value": ["#b3ccff", "#8aafff", "#85a0db", "#d9e6ff"] // мягкие оттенки из палитры
+            },
+            "shape": {
+              "type": "circle",
+              "stroke": {
+                "width": 0,
+                "color": "#000000"
+              }
+            },
+            "opacity": {
+              "value": 0.6,
+              "random": true,
+              "anim": {
+                "enable": true,
+                "speed": 0.8,
+                "opacity_min": 0.25,
+                "sync": false
+              }
+            },
+            "size": {
+              "value": 4.5,
+              "random": true,
+              "anim": {
+                "enable": true,
+                "speed": 2.5,
+                "size_min": 1.2,
+                "sync": false
+              }
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 160,
+              "color": "#85a8db", // тёплый синий
+              "opacity": 0.28,
+              "width": 1.4
+            },
+            "move": {
+              "enable": true,
+              "speed": 1.8, // плавное движение
+              "direction": "none",
+              "random": true,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false,
+              "attract": {
+                "enable": true,
+                "rotateX": 800,
+                "rotateY": 1400
+              }
+            }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+              "onhover": {
+                "enable": true, // включаем реакцию на мышь
+                "mode": "grab" // линии тянутся к курсору (мягкий эффект)
+              },
+              "onclick": {
+                "enable": false, // оставляем выключенным, чтобы не мешать кликам по спойлерам
+                "mode": "push"
+              },
+              "resize": true
+            },
+            "modes": {
+              "grab": {
+                "distance": 200,
+                "line_linked": {
+                  "opacity": 0.6 // линии становятся ярче при наведении
+                }
+              },
+              "bubble": {
+                "distance": 250,
+                "size": 8,
+                "duration": 2,
+                "opacity": 0.6,
+                "speed": 3
+              },
+              "repulse": {
+                "distance": 150,
+                "duration": 0.4
+              },
+              "push": {
+                "particles_nb": 4
+              },
+              "remove": {
+                "particles_nb": 2
+              }
+            }
+          },
+          "retina_detect": true,
+          "background": {
+            "color": "transparent", // прозрачный фон — просвечивает градиент body
+            "image": "",
+            "position": "50% 50%",
+            "repeat": "no-repeat",
+            "size": "cover"
+          }
+        };
+        // Запускаем particles.js
+        particlesJS('particles-js', particlesConfig);
+        // Небольшой штрих: подкрашиваем canvas в тон сайта (если нужно)
+        // (частицы и так цветные, просто убедимся, что canvas прозрачен)
+        const canvas = document.querySelector('#particles-js canvas');
+        if (canvas) {
+          canvas.style.display = 'block';
+          canvas.style.position = 'fixed';
+          canvas.style.top = '0';
+          canvas.style.left = '0';
+          canvas.style.width = '100%';
+          canvas.style.height = '100%';
+          canvas.style.pointerEvents = 'auto';
+        }
+      })();
+    </script>
+    <!-- Небольшой фикс для того, чтобы фон частиц точно был прозрачным -->
+    <style>
+      /* Гарантируем, что canvas от particles.js прозрачный */
+      #particles-js canvas {
+        background: transparent !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 0;
+        pointer-events: auto;
+      }
+
+      /* Чтобы body не перекрывал canvas по z-index (уже задано) */
+      body {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Слегка усиливаем читаемость на фоне паутинки */
+      .spoiler,
+      .header {
+        transition: backdrop-filter 0.2s;
+      }
+    </style>
+  </body>
+</html>
