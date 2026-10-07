@@ -192,6 +192,77 @@
         margin-bottom: 0;
       }
 
+      /* Таблица учебников: адаптивно сжимается под доступную ширину */
+      .spoiler-text table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+      }
+
+      .spoiler-text table td {
+        vertical-align: top;
+        padding: 6px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      /* Обложка учебника: уменьшается пропорционально экрану, 220x286 — максимум */
+      .book {
+        display: block;
+        width: 100%;
+        max-width: 220px;
+        height: auto;
+        aspect-ratio: 220 / 286;
+        object-fit: contain;
+        margin: 0 auto;
+      }
+
+      .spoiler-text table p {
+        margin: 6px 0 0;
+        font-size: clamp(0.8rem, 2.6vw, 1rem);
+        line-height: 1.35;
+      }
+
+      /* Картинки в спойлерах — не выходят за пределы экрана */
+      .spoiler-text img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Центрированная картинка в блоке текста */
+      .centered-media {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Видеозал: iframe адаптивно вписывается в доступную ширину */
+      .spoiler-text iframe {
+        display: block;
+        width: 100%;
+        max-width: 560px;
+        aspect-ratio: 16 / 9;
+        height: auto;
+        margin: 0 auto;
+        border: 0;
+      }
+
+      /* Длинные строки и неразрывные пробелы не должны распирать блок */
+      .spoiler-text p,
+      .spoiler-text a,
+      .spoiler-text span {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .spoiler-text hr {
+        border: 0;
+        border-top: 1px solid #c6a0f0;
+        margin: 14px 0;
+      }
+
       /* Адаптивность */
       @media (max-width: 600px) {
         body {
@@ -220,6 +291,18 @@
 
         .spoiler-text {
           padding: 14px 16px;
+        }
+
+        .spoiler-text table {
+          min-width: 0;
+        }
+
+        .spoiler-text table td {
+          padding: 4px;
+        }
+
+        .book {
+          max-width: 150px;
         }
       }
 
@@ -286,7 +369,7 @@
           <div class="spoiler-content">
             <div class="spoiler-content-inner">
               <div class="spoiler-text">
-                <p style="text-align: center;"><img src="img/logo-physics.jpg" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" alt="Логотип виртуального кабинета физики"></p>
+                <p style="text-align: center;"><img class="centered-media" src="img/logo-physics.jpg" alt="Логотип виртуального кабинета физики"></p>
                 <p>✅ <strong>Цели и задачи работы кабинета:</strong>
                 </p>
                 <p>
@@ -321,7 +404,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/VFHMn8BGhrF0aA" target="_blank">
-                            <img src="img/books/physics/Fizika_7kl_Isachenkova_bel_2022.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_7kl_Isachenkova_bel_2022.jpg" alt="Учебник физики 7 класс (бел.)" />
                           </a>
                         </p>
                         <p>Аўтары: Ісачанкава Л.А., Ляшчынскі Ю.Д.</p>
@@ -329,7 +412,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/ozFoeg88O-yutQ" target="_blank">
-                            <img src="img/books/physics/Fizika_7kl_Isachenkova_rus_2022.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_7kl_Isachenkova_rus_2022.jpg" alt="Учебник физики 7 класс (рус.)" />
                           </a>
                         </p>
                         <p>Авторы: Исаченкова Л.А., Лещинский Ю.Д.</p>
@@ -347,7 +430,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/mCOwRhNR95HSoQ" target="_blank">
-                            <img src="img/books/physics/Fizika_8kl_Isachenkova_bel_2024.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_8kl_Isachenkova_bel_2024.jpg" alt="Учебник физики 8 класс (бел.)" />
                           </a>
                         </p>
                         <p>Аўтары: Ісачанкава Л.А., Ляшчынскі Ю.Д., Дарафейчык У.У.</p>
@@ -355,7 +438,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/_ButFpV0FmIMmQ" target="_blank">
-                            <img src="img/books/physics/Fizika_8kl_Isachenkova_rus_2024.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_8kl_Isachenkova_rus_2024.jpg" alt="Учебник физики 8 класс (рус.)" />
                           </a>
                         </p>
                         <p>Авторы: Исаченкова Л.А., Лещинский Ю.Д., Дорофейчик В.В.</p>
@@ -373,7 +456,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/4jVfuhQ-YtTDFA" target="_blank">
-                            <img src="img/books/physics/Fizika_9kl_Isachenkova_bel_2026.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_9kl_Isachenkova_bel_2026.jpg" alt="Учебник физики 9 класс (бел.)" />
                           </a>
                         </p>
                         <p>Аўтары: Ісачанкава Л.А., Сакольскі А.А., Захарэвіч К.В.</p>
@@ -381,7 +464,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/xVQApHtsgRe-cg" target="_blank">
-                            <img src="img/books/physics/Fizika_9kl_Isachenkova_rus_2026.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_9kl_Isachenkova_rus_2026.jpg" alt="Учебник физики 9 класс (рус.)" />
                           </a>
                         </p>
                         <p>Авторы: Исаченкова Л.А., Сокольский А.А., Захаревич Е.В.</p>
@@ -399,7 +482,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/ZVI5hIbflwwTbw" target="_blank">
-                            <img src="img/books/physics/Fizika_10kl_Gromika_bel_2020.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_10kl_Gromika_bel_2020.jpg" alt="Учебник физики 10 класс (бел.)" />
                           </a>
                         </p>
                         <p>Аўтары: Грамыка А.У., Зяньковіч У.І., Луцэвіч А.А., Слесар І.Э.</p>
@@ -407,7 +490,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/G1cl3rIM2Y2zYQ" target="_blank">
-                            <img src="img/books/physics/Fizika_10kl_Gromika_rus_2019.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_10kl_Gromika_rus_2019.jpg" alt="Учебник физики 10 класс (рус.)" />
                           </a>
                         </p>
                         <p>Авторы: Громыко Е.В., Зенькович В.И., Луцевич А.А., Слесарь И.Э.</p>
@@ -425,7 +508,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/64GvK_q7wQ9hxg" target="_blank">
-                            <img src="img/books/physics/Fizika_11kl_Zhilko_bel_2021.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_11kl_Zhilko_bel_2021.jpg" alt="Учебник физики 11 класс (бел.)" />
                           </a>
                         </p>
                         <p>Аўтары: Жылко В.У., Марковіч Л.Р.</p>
@@ -433,7 +516,7 @@
                       <td style="text-align: center;">
                         <p>
                           <a href="https://disk.yandex.by/i/Tx-qrUg3vAJ46Q" target="_blank">
-                            <img src="img/books/physics/Fizika_11kl_Zhilko_rus_2021.jpg" alt="" vspace="" align="" hspace="" width="220" height="286" />
+                            <img class="book" src="img/books/physics/Fizika_11kl_Zhilko_rus_2021.jpg" alt="Учебник физики 11 класс (рус.)" />
                           </a>
                         </p>
                         <p>Авторы: Жилко В.В., Маркович Л.Г.</p>
@@ -465,7 +548,7 @@
             <div class="spoiler-content-inner">
               <div class="spoiler-text">
                 <p>🧪 <strong>Виртуальная лаборатория</strong></p>
-                <p style="text-align: center;"><img src="img/Naglyadnaya_fizika.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" alt="Виртуальная лаборатория"></p>
+                <p style="text-align: center;"><img class="centered-media" src="img/Naglyadnaya_fizika.png" alt="Виртуальная лаборатория"></p>
                 <p>
                   <span style="font-size: 1.2em; color: #000000;">
                     <strong>Базовая школа</strong>
@@ -664,7 +747,7 @@
             <div class="spoiler-content-inner">
               <div class="spoiler-text">
                 <p>💡 <strong>Интерактивный репетитор по физике</strong></p>
-                <p style="text-align: center;"><img src="img/Repetitor_fizika.jpg" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" alt="Интерактивный репетитор по физике"></p>
+                <p style="text-align: center;"><img class="centered-media" src="img/Repetitor_fizika.jpg" alt="Интерактивный репетитор по физике"></p>
                 <p><span style="color: #000000;"><a href="https://disk.yandex.ru/d/Z21aaODyFtrzYg" target="_blank"><strong><span style="font-size: 1.2em;"><span style="color: #000000;">Репетитор. Интерактивный учебник. Решение задач по физике. </span></span></strong><span style="font-size: 1.2em;"><span style="color: #000000;">(Скачать)</span></span></a></span></p>
                 <p><a href="https://disk.yandex.ru/d/x5RNKNyqiKIU4g" target="_blank"><strong><span style="font-size: 1.2em; color: #000000;"><span style="color: #000000;">Исправление ошибки запуска на новых 64 разрядных системах.</span></span></strong></a></p>
                 <p>Данные материалы размещены в некоммерческих целях только для ознакомления.</p>
@@ -686,7 +769,7 @@
                 <p>🧲 <strong>Видеозал - Физика в опытах</strong></p>
                 <p style="text-align: center;"><strong><span style="font-size: 1.2em;">Наглядно &ndash; интересно &ndash; просто &ndash; понятно!</span></strong></p>
                 <p style="text-align: center;"><strong><span style="font-size: 1.2em;">Видеокурс НИЯУ МИФИ, представляющий собой серию физических опытов, наглядно демонстрирующих работу основных законов Физики:</span></strong></p>
-                <p style="text-align: center;"><iframe width="560" height="315" src="https://www.youtube.com/embed/_XIJwF2zPnI?si=sc79XIWUcOGdz83T" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+                <p style="text-align: center;"><iframe src="https://www.youtube.com/embed/_XIJwF2zPnI?si=sc79XIWUcOGdz83T" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
                 
                 <p>Демонстрацию физических явлений проводит незаурядный преподаватель, доцент кафедры общей физики НИЯУ «МИФИ» — Валериан Иванович Гервидс, который доступно и наглядно объясняет основные принципы и законы физики.&nbsp;</p>
                 
@@ -815,7 +898,7 @@
             <div class="spoiler-content-inner">
               <div class="spoiler-text">
                 <p>🌟 <strong>Фестиваль педагогического мастерства &laquo;Творческие каникулы&raquo;</strong></p>
-                <p style="text-align: center;"><img src="img/album/Festival_001.jpg" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" alt="Творческие каникулы"></p>
+                <p style="text-align: center;"><img class="centered-media" src="img/album/Festival_001.jpg" alt="Творческие каникулы"></p>
 
                 <p>Ежегодный<strong>&nbsp;</strong>фестиваль&nbsp;педагогического мастерства &laquo;Творческие каникулы&raquo;.</p>
 
