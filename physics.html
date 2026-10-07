@@ -60,6 +60,31 @@
         text-align: center;
         transition: box-shadow 0.2s;
         pointer-events: auto;
+        position: relative;
+      }
+
+      /* Ссылка возврата на главную страницу в левом нижнем углу шапки */
+      .back-link {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #fff3fe;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 8px 18px 8px 20px;
+        border-radius: 0 20px 0 7px;
+        background: rgba(255, 255, 255, 0.16);
+        transition: background 0.2s ease;
+      }
+
+      .back-link:hover,
+      .back-link:focus-visible {
+        background: rgba(255, 255, 255, 0.3);
+        outline: none;
       }
 
       .header h1 {
@@ -274,6 +299,13 @@
           margin-bottom: 24px;
         }
 
+        /* Ссылка на главную на мобильных становится компактной */
+        .back-link {
+          font-size: 0.8rem;
+          padding: 7px 14px 7px 16px;
+          border-radius: 0 16px 0 6px;
+        }
+
         /* На узких экранах разрешаем заголовку переноситься,
            чтобы он не выходил за пределы макета */
         .header h1 {
@@ -361,6 +393,7 @@
     <div class="wrapper">
       <!-- Шапка -->
       <header class="header">
+        <a class="back-link" href="index.html">← На главную</a>
         <h1>⚛️ Виртуальный кабинет физики</h1>
         <div class="header-sub">интерактивные материалы · эксперименты · теория</div>
       </header>
