@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Виртуальный кабинет информатики</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Контейнер для частиц — фона в виде паутинки */
+      #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        /* позади всего контента */
+        pointer-events: auto;
+        /* чтобы клики проходили сквозь частицы */
+        background: transparent;
+        /* градиент body будет виден */
+      }
+
+      body {
+        font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+        background: linear-gradient(145deg, #e6f7f5 0%, #cdeae7 100%);
+        min-height: 100vh;
+        padding: 20px 16px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        /* чтобы body был над #particles-js, но контент выше */
+      }
+
+      .wrapper {
+        max-width: 900px;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 5;
+        /* контент точно поверх частиц */
+      }
+
+      /* Шапка с градиентом */
+      .header {
+        background: linear-gradient(135deg, #0d4d4a, #14837b, #1fb3a6);
+        background-size: 200% 200%;
+        padding: 28px 20px;
+        border-radius: 40px 40px 40px 8px;
+        margin-bottom: 26px;
+        box-shadow: 0 12px 28px rgba(13, 77, 74, 0.25);
+        border: 1px solid rgba(215, 255, 250, 0.3);
+        text-align: center;
+        transition: box-shadow 0.2s;
+        pointer-events: auto;
+      }
+
+      .header h1 {
+        color: #f0fffc;
+        font-weight: 700;
+        font-size: clamp(18px, 4.8vw, 44px);
+        letter-spacing: -0.01em;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        white-space: nowrap;
+      }
+
+      .header-sub {
+        color: #d6f2ed;
+        margin-top: 8px;
+        font-size: 1.1rem;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+
+      /* Контейнер спойлеров (details) */
+      .accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      /* Стилизация элемента details как спойлера */
+      .spoiler {
+        background: rgba(245, 255, 253, 0.7);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 28px;
+        box-shadow: 0 8px 18px rgba(13, 77, 74, 0.15);
+        border: 1px solid rgba(130, 210, 200, 0.4);
+        transition: box-shadow 0.25s ease;
+      }
+
+      .spoiler:hover {
+        box-shadow: 0 10px 24px rgba(20, 140, 130, 0.25);
+        border-color: #6fd6c8;
+      }
+
+      /* Заголовок спойлера — summary */
+      .spoiler summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(105deg, #7fc9bf, #63bbb0);
+        padding: 18px 24px;
+        border-radius: 28px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #0a2422;
+        cursor: pointer;
+        transition: background 0.3s, border-radius 0.2s, box-shadow 0.2s;
+        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #c2ece5;
+        letter-spacing: -0.01em;
+        list-style: none;
+        /* убираем стандартный треугольник */
+      }
+
+      .spoiler summary::-webkit-details-marker {
+        display: none;
+        /* скрываем маркер в WebKit */
+      }
+
+      /* Собственная иконка-стрелка */
+      .spoiler summary .spoiler-icon {
+        font-size: 1.8rem;
+        line-height: 1;
+        transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1);
+        color: #08302d;
+        margin-left: 8px;
+        user-select: none;
+      }
+
+      /* При открытом спойлере меняем стили summary и поворачиваем стрелку */
+      .spoiler[open] summary {
+        border-radius: 28px 28px 22px 22px;
+        background: linear-gradient(105deg, #63bcb0, #54b0a4);
+        box-shadow: inset 0 1px 3px #fff3, 0 6px 10px rgba(10, 60, 56, 0.2);
+      }
+
+      .spoiler[open] summary .spoiler-icon {
+        transform: rotate(180deg);
+      }
+
+      /* Анимация раскрытия контента (CSS-only) */
+      .spoiler-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        overflow: hidden;
+        transition: grid-template-rows 0.45s ease-in-out;
+        background: rgba(240, 255, 253, 0.5);
+        border-radius: 0 0 28px 28px;
+        color: #0d2320;
+      }
+
+      /* Когда details открыт, контенту задаётся достаточная высота */
+      .spoiler[open] .spoiler-content {
+        grid-template-rows: 1fr;
+      }
+
+      .spoiler-content-inner {
+        padding: 8px 26px 26px 26px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        border-top: 1px dashed #9fd8d0;
+      }
+
+      /* Плейсхолдер текст */
+      .spoiler-text {
+        background: rgba(160, 220, 210, 0.25);
+        padding: 16px 20px;
+        border-radius: 24px;
+        border-left: 6px solid #14837b;
+        color: #0d2220;
+        font-style: italic;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        box-shadow: inset 0 1px 4px #c2e8e2;
+      }
+
+      .spoiler-text p {
+        margin-bottom: 10px;
+      }
+
+      .spoiler-text p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Таблица учебников: адаптивно сжимается под доступную ширину */
+      .spoiler-text table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+      }
+
+      .spoiler-text table td {
+        vertical-align: top;
+        padding: 6px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      /* Обложка учебника: на десктопе — оригинальные 220x286,
+         при нехватке места уменьшается пропорционально */
+      .book {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 220px;
+        margin: 0 auto;
+      }
+
+      .spoiler-text table p {
+        margin: 6px 0 0;
+        font-size: clamp(0.8rem, 2.6vw, 1rem);
+        line-height: 1.35;
+      }
+
+      /* Картинки в спойлерах — не выходят за пределы экрана */
+      .spoiler-text img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Центрированная картинка в блоке текста */
+      .centered-media {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Видеозал: iframe адаптивно вписывается в доступную ширину */
+      .spoiler-text iframe {
+        display: block;
+        width: 100%;
+        max-width: 560px;
+        aspect-ratio: 16 / 9;
+        height: auto;
+        margin: 0 auto;
+        border: 0;
+      }
+
+      /* Длинные строки и неразрывные пробелы не должны распирать блок */
+      .spoiler-text p,
+      .spoiler-text a,
+      .spoiler-text span {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .spoiler-text hr {
+        border: 0;
+        border-top: 1px solid #9fd8d0;
+        margin: 14px 0;
+      }
+
+      /* Адаптивность */
+      @media (max-width: 600px) {
+        body {
+          padding: 12px 10px 30px;
+        }
+
+        .header {
+          padding: 22px 14px;
+          border-radius: 32px 32px 32px 6px;
+          margin-bottom: 24px;
+        }
+
+        /* На узких экранах разрешаем заголовку переноситься,
+           чтобы он не выходил за пределы макета */
+        .header h1 {
+          white-space: normal;
+          word-break: break-word;
+        }
+
+        .spoiler summary {
+          padding: 16px 18px;
+          font-size: 1.3rem;
+        }
+
+        .spoiler summary .spoiler-icon {
+          font-size: 1.6rem;
+        }
+
+        .spoiler-content-inner {
+          padding: 8px 18px 22px 18px;
+          font-size: 1rem;
+        }
+
+        .spoiler-text {
+          padding: 14px 16px;
+        }
+
+        .spoiler-text table {
+          min-width: 0;
+        }
+
+        .spoiler-text table td {
+          padding: 4px;
+        }
+
+        /* На узких экранах обложки сжимаются пропорционально,
+           но не больше доступной ширины ячейки */
+        .book {
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .spoiler summary {
+          font-size: 1.2rem;
+          padding: 14px 14px;
+        }
+      }
+
+      /* Футер */
+      .footer-note {
+        margin-top: 20px;
+        text-align: center;
+        color: #0d3d38;
+        opacity: 0.8;
+        font-size: 0.95rem;
+      }
+
+      /* Убираем стандартный outline, добавляем свой для accessibility */
+      .spoiler summary:focus-visible {
+        outline: 3px solid #b8f0e6;
+        outline-offset: 2px;
+      }
+
+      /* Анимация появления */
+      .wrapper {
+        animation: fadeSlide 0.6s ease;
+      }
+
+      @keyframes fadeSlide {
+        0% {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- КОНТЕЙНЕР ДЛЯ ПАУТИНКИ (ЧАСТИЦ) -->
+    <div id="particles-js"></div>
+    
+    <div class="wrapper">
+      <!-- Шапка -->
+      <header class="header">
+        <h1>💻 Виртуальный кабинет информатики</h1>
+        <div class="header-sub">интерактивные материалы · алгоритмы · программирование</div>
+      </header>
+      
+      <!-- Аккордеон на чистом HTML+CSS с использованием <details> -->
+      <div class="accordion">
+
+        <!-- Цели и задачи работы кабинета -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">☑️ Цели и задачи работы кабинета</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p style="text-align: center;"><img class="centered-media" src="img/logo-informatics.jpg" alt="Логотип виртуального кабинета информатики"></p>
+                <p>✅ <strong>Цели и задачи работы кабинета:</strong>
+                </p>
+                <p>
+                  <strong>
+                    <strong>&bull;&nbsp;</strong>&nbsp; &nbsp; мотивирование обучения и стимулирование деятельности учащихся в рамках учебного предмета информатика; <br />
+                    <strong>&bull;&nbsp;</strong>&nbsp; &nbsp; развитие любознательности у учащихся и познавательного интереса к информатике; <br />
+                    <strong>&bull;&nbsp;</strong>&nbsp; &nbsp; углубление знаний по информатике. </strong>
+                  <br /> &nbsp;
+                </p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Учебники по информатике -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">📘 Учебники по информатике</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>📚 <strong>Учебники по информатике</strong></p>
+                <p>Данные материалы размещены в некоммерческих целях только для ознакомления.</p>
+                <p>Правообладатель: Издательское республиканское унитарное предприятие &laquo;Народная асвета&raquo;.</p>
+                <p></p>
+                <p><strong><span style="font-size: 1.2em;">Нажмите на обложку нужного вам учебника ниже, чтобы его скачать:</span></strong></p>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_6kl_Kotov_bel_2024.jpg" alt="Учебник информатики 6 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Котаў А.А., Варапаева А.А.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_6kl_Kotov_rus_2024.jpg" alt="Учебник информатики 6 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Котов А.А., Воропаева А.А.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_7kl_Kotov_bel_2025.jpg" alt="Учебник информатики 7 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Котаў А.А., Варапаева А.А.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_7kl_Kotov_rus_2025.jpg" alt="Учебник информатики 7 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Котов А.А., Воропаева А.А.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_8kl_Kotov_bel_2026.jpg" alt="Учебник информатики 8 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Котаў А.А., Варапаева А.А.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_8kl_Kotov_rus_2026.jpg" alt="Учебник информатики 8 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Котов А.А., Воропаева А.А.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_9kl_Kotov_bel_2019.jpg" alt="Учебник информатики 9 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Котаў А.А., Варапаева А.А.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_9kl_Kotov_rus_2019.jpg" alt="Учебник информатики 9 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Котов А.А., Воропаева А.А.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_10kl_Kotov_bel_2020.jpg" alt="Учебник информатики 10 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Котаў А.А., Варапаева А.А.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_10kl_Kotov_rus_2020.jpg" alt="Учебник информатики 10 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Котов А.А., Воропаева А.А.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_11kl_Kotov_bel_2021.jpg" alt="Учебник информатики 11 класс (бел.)" />
+                          </a>
+                        </p>
+                        <p>Аўтары: Котаў А.А., Варапаева А.А.</p>
+                      </td>
+                      <td style="text-align: center;">
+                        <p>
+                          <a href="#" target="_blank">
+                            <img class="book" src="img/books/informatics/Informatika_11kl_Kotov_rus_2021.jpg" alt="Учебник информатики 11 класс (рус.)" />
+                          </a>
+                        </p>
+                        <p>Авторы: Котов А.А., Воропаева А.А.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p></p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Виртуальная лаборатория -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">🔬 Виртуальная лаборатория</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🧪 <strong>Виртуальная лаборатория</strong></p>
+                <p>Интерактивные среды и тренажёры для освоения основ алгоритмизации и программирования.</p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Базовая школа</strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">&nbsp; &nbsp; <strong>&bull;</strong>
+                    <strong>&nbsp; <a href="#" target="_blank">
+                        <span style="color: #000000;">6–7 классы. Алгоритмы и исполнители</span>
+                      </a>
+                    </strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">&nbsp; &nbsp; <strong>&bull;</strong>
+                    <strong>&nbsp; <a href="#" target="_blank">
+                        <span style="color: #000000;">8–9 классы. Программирование на Python</span>
+                      </a>
+                    </strong>
+                  </span>
+                </p>
+                <p>&nbsp; &nbsp;</p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Средняя школа</strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">&nbsp; &nbsp; <strong>&bull;</strong>
+                    <strong>&nbsp; <a href="#" target="_blank">
+                        <span style="color: #000000;">10–11 классы. Основы веб-разработки</span>
+                      </a>
+                    </strong>
+                  </span>
+                </p>
+                <p>Данные материалы размещены в некоммерческих целях только для ознакомления.</p>
+                <p>&nbsp; &nbsp;</p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Методические разработки по информатике -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">📝 Методические разработки по информатике</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>📌 <strong>Методические разработки</strong></p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="color: #000000;">
+                    <a href="#" target="_blank">
+                      <span style="font-size: 1.2em; color: #000000;">
+                        <strong>Набор тестов по информатике для тестовой системы 10-балльного мониторинга </strong>(Скачать) </span>
+                    </a>
+                  </span>
+                </p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="font-size: 1.2em;">
+                    <strong>Набор презентаций и методических разработок для проведения уроков по информатике:</strong>
+                  </span>
+                </p>
+                <p>
+                  <span style="font-size: 1.2em;">
+                    <strong>&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 6 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 7 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 8 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 9 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 10 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                    <strong>
+                      <br />&nbsp; &nbsp; &bull; <a href="#" target="_blank">
+                        <span style="color: #000000;"><span style="color: #000000;">для 11 класса&nbsp;</span></span>
+                      </a>
+                    </strong>
+                    <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">(Скачать)</span></span></a>
+                  </span>
+                </p>
+                <p></p>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Видеозал - Информатика в задачах -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">▶️ Видеозал - Информатика в задачах</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🖥️ <strong>Видеозал - Информатика в задачах</strong></p>
+                <p style="text-align: center;"><strong><span style="font-size: 1.2em;">Наглядно &ndash; интересно &ndash; просто &ndash; понятно!</span></strong></p>
+                <p style="text-align: center;"><strong><span style="font-size: 1.2em;">Видеокурс с разбором ключевых тем школьного курса информатики:</span></strong></p>
+                <p style="text-align: center;"><iframe src="https://www.youtube.com/embed/_XIJwF2zPnI?si=sc79XIWUcOGdz83T" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+                
+                <p>В видеокурсе доступно и наглядно объясняются основные принципы информатики, разбираются алгоритмы, структуры данных и типовые задачи по программированию.&nbsp;</p>
+                
+                <p>
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &bull; Часть 1. Информация и системы счисления</span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.1 ИНФОРМАЦИЯ И ЕЁ ИЗМЕРЕНИЕ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.2 СИСТЕМЫ СЧИСЛЕНИЯ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">1.3 КОДИРОВАНИЕ ДАННЫХ</span></span></a></span></strong>
+                </p>
+                
+                <p>
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &bull; Часть 2. Алгоритмы и программирование</span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">2.1 АЛГОРИТМЫ И ИСПОЛНИТЕЛИ</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">2.2 БАЗОВЫЕ КОНСТРУКЦИИ ЯЗЫКА</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">2.3 СТРУКТУРЫ ДАННЫХ</span></span></a></span></strong>
+                </p>
+                
+                <p>
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &bull; Часть 3. Компьютер и сети</span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">3.1 АРХИТЕКТУРА КОМПЬЮТЕРА</span></span></a></span></strong><br />
+                <strong><span style="font-size: 1.2em;">&nbsp; &nbsp; &nbsp; &nbsp; &bull; <a href="#" target="_blank"><span style="color: #000000;"><span style="color: #000000;">3.2 КОМПЬЮТЕРНЫЕ СЕТИ</span></span></a></span></strong>
+                </p>
+                
+                <p></p>
+                </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Фестиваль педагогического мастерства -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">✨️ Фестиваль педагогического мастерства &laquo;Творческие каникулы&raquo;</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🌟 <strong>Фестиваль педагогического мастерства &laquo;Творческие каникулы&raquo;</strong></p>
+                <p style="text-align: center;"><img class="centered-media" src="img/album/Festival_001.jpg" alt="Творческие каникулы"></p>
+
+                <p>Ежегодный<strong>&nbsp;</strong>фестиваль&nbsp;педагогического мастерства &laquo;Творческие каникулы&raquo;.</p>
+
+                <p>Тема фестиваля &mdash; &laquo;Совершенствование профессиональных компетенций педагогов по развитию личностных, метапредметных, предметных компетенций учащихся посредством учебных предметов &laquo;Физика&raquo;, &laquo;Математика&raquo; и &laquo;Астрономия&raquo;.</p>
+
+                <p>Участники&nbsp;мероприятия &mdash; педагогические работники Брестской, Витебской, Гомельской, Гродненской, Минской, Могилевской областей и г.&nbsp;Минска.</p>
+                
+                <p><a href="https://www.mogileviro.by/archives/20023" target="_blank">Отчет о VII Фестивале педагогического мастерства &laquo;Творческие каникулы&raquo;</a></p>
+                
+                <p></p>
+                </div>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Полезные интернет-ресурсы по информатике -->
+        <details class="spoiler">
+          <summary>
+            <span class="spoiler-title">🌐 Полезные интернет-ресурсы по информатике</span>
+            <span class="spoiler-icon" aria-hidden="true">▼</span>
+          </summary>
+          <div class="spoiler-content">
+            <div class="spoiler-content-inner">
+              <div class="spoiler-text">
+                <p>🔗 <strong>Полезные ссылки</strong></p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Материалы отдела физико-математических и естественнонаучных дисциплин МГОИРО:</strong>
+                  </span>
+                </p>
+                <p>
+                <span style="font-size: 1.2em; color: #000000;">
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">В помощь учителю информатики</span></a><br />
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">Дидактические материалы по информатике</span></a>
+                </span>
+                </p>
+                <p>&nbsp;</p>
+                <hr />
+                <p>
+                  <span style="font-size: 1.2em; color: #000000;">
+                    <strong>Полезные образовательные ресурсы:</strong>
+                  </span>
+                </p>
+                <p>
+                <span style="font-size: 1.2em; color: #000000;">
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">PascalABC.NET — среда программирования для школьников</span></a><br />
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">Python — язык программирования</span></a><br />
+                  &bull;&nbsp;<a href="#" target="_blank"><span style="color: #000000;">ЯКласс — цифровой образовательный ресурс</span></a>
+                </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </details>        
+      </div>
+      <div class="footer-note">💻 Автор сайта: <a href="https://t.me/bardilovsky" target="_blank"><span style="color: #000000;">Бардиловский Фёдор Владимирович</span></a></div>
+    </div>
+    <!-- Подключаем библиотеку particles.js для создания фона из частиц в виде паутинки -->
+    <script src="particles.min.js"></script>
+    <!-- Инициализация паутинки в цветах сайта -->
+    <script>
+      (function() {
+        // Ждём загрузки библиотеки и DOM
+        if (typeof particlesJS === 'undefined') {
+          console.warn('particles.js не загружен. Паутинка не появится.');
+          return;
+        }
+        // Конфигурация, стилизованная под бирюзовую гамму сайта
+        const particlesConfig = {
+          "particles": {
+            "number": {
+              "value": 100, // не слишком густо, но заметно
+              "density": {
+                "enable": true,
+                "value_area": 900
+              }
+            },
+            "color": {
+              "value": ["#a9e3da", "#7fd0c4", "#7fc9bf", "#d6f2ed"] // мягкие оттенки из палитры
+            },
+            "shape": {
+              "type": "circle",
+              "stroke": {
+                "width": 0,
+                "color": "#000000"
+              }
+            },
+            "opacity": {
+              "value": 0.6,
+              "random": true,
+              "anim": {
+                "enable": true,
+                "speed": 0.8,
+                "opacity_min": 0.25,
+                "sync": false
+              }
+            },
+            "size": {
+              "value": 4.5,
+              "random": true,
+              "anim": {
+                "enable": true,
+                "speed": 2.5,
+                "size_min": 1.2,
+                "sync": false
+              }
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 160,
+              "color": "#7fc9bf", // тёплый бирюзовый
+              "opacity": 0.28,
+              "width": 1.4
+            },
+            "move": {
+              "enable": true,
+              "speed": 1.8, // плавное движение
+              "direction": "none",
+              "random": true,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false,
+              "attract": {
+                "enable": true,
+                "rotateX": 800,
+                "rotateY": 1400
+              }
+            }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+              "onhover": {
+                "enable": true, // включаем реакцию на мышь
+                "mode": "grab" // линии тянутся к курсору (мягкий эффект)
+              },
+              "onclick": {
+                "enable": false, // оставляем выключенным, чтобы не мешать кликам по спойлерам
+                "mode": "push"
+              },
+              "resize": true
+            },
+            "modes": {
+              "grab": {
+                "distance": 200,
+                "line_linked": {
+                  "opacity": 0.6 // линии становятся ярче при наведении
+                }
+              },
+              "bubble": {
+                "distance": 250,
+                "size": 8,
+                "duration": 2,
+                "opacity": 0.6,
+                "speed": 3
+              },
+              "repulse": {
+                "distance": 150,
+                "duration": 0.4
+              },
+              "push": {
+                "particles_nb": 4
+              },
+              "remove": {
+                "particles_nb": 2
+              }
+            }
+          },
+          "retina_detect": true,
+          "background": {
+            "color": "transparent", // прозрачный фон — просвечивает градиент body
+            "image": "",
+            "position": "50% 50%",
+            "repeat": "no-repeat",
+            "size": "cover"
+          }
+        };
+        // Запускаем particles.js
+        particlesJS('particles-js', particlesConfig);
+        // Небольшой штрих: подкрашиваем canvas в тон сайта (если нужно)
+        // (частицы и так цветные, просто убедимся, что canvas прозрачен)
+        const canvas = document.querySelector('#particles-js canvas');
+        if (canvas) {
+          canvas.style.display = 'block';
+          canvas.style.position = 'fixed';
+          canvas.style.top = '0';
+          canvas.style.left = '0';
+          canvas.style.width = '100%';
+          canvas.style.height = '100%';
+          canvas.style.pointerEvents = 'auto';
+        }
+      })();
+    </script>
+    <!-- Небольшой фикс для того, чтобы фон частиц точно был прозрачным -->
+    <style>
+      /* Гарантируем, что canvas от particles.js прозрачный */
+      #particles-js canvas {
+        background: transparent !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 0;
+        pointer-events: auto;
+      }
+
+      /* Чтобы body не перекрывал canvas по z-index (уже задано) */
+      body {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Слегка усиливаем читаемость на фоне паутинки */
+      .spoiler,
+      .header {
+        transition: backdrop-filter 0.2s;
+      }
+    </style>
+  </body>
+</html>
