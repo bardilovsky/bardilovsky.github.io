@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="description" content="Проведите незабываемый урок информатики в вашем образовательном учреждении, приняв участие во Всероссийской акции «Час кода»!">
+    <title>ЧасКода. Информация для преподавателей.</title>
+    <link rel="stylesheet" type="text/css" href="static/lib/select2-3.5.2/select2.css" media="all">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css" media="all">
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="blocks/_style.ie.css" media="all">
+    <![endif]-->
+
+    <script>
+        if(!window.console)window.console = {
+            log:function(){},
+            info:function(){},
+            error:function(){}
+        };
+
+        if(window.console && !window.console.log)console.log = function(){};
+        if(window.console && !window.console.info)console.info = function(){};
+        if(window.console && !window.console.error)console.error = function(){};
+
+    </script>
+
+    <script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
+    <script src="static/js/velocity.min.js"></script>
+    <script type="text/javascript" src="static/js/knockout-3.2.0.js"></script>
+    <script type="text/javascript" src="static/js/lodash.js"></script>
+    <script type="text/javascript" src="static/js/map.js"></script>
+    <script type="text/javascript" src="static/lib/select2-3.5.2/select2.min.js"></script>
+    <script type="text/javascript" src="static/js/index.js"></script>
+
+
+</head>
+<body>
+<div class="b-header  b-header_inner">
+    <div class="l-container">
+        <div class="l-row">
+            <div class="l-col_1">
+                <div class="b-logo">
+                    <a href="../hoc2014.html" class="b-logo__box b-logo__box_sm"></a>
+                </div>
+            </div>
+            <div class="l-col_11 i-text_right">
+                <ul class="b-lessonsCounter" data-bind="foreach: lessons">
+                    <li class="b-lessonsCounter__item"><a class="b-lessonsCounter__item-link" data-bind="text: $index(), attr: {href: '#lesson' + $index() }, css: {'b-lessonsCounter__item-link_complite': complite }, click: data.setActivelesson.bind(null, $index(), $element)"></a></li>
+                </ul>
+                <button data-bind="click:endLess" type="button" class="b-btn b-btn_sm b-lesson__finish">Завершить</button>
+            </div>    
+        </div>   
+    </div>
+</div>
+    <div class="l-container b-lesson__container">
+        <div class="l-row">
+            <div class="l-col_6">
+                <div class="b-ytplayer">
+                    <iframe id="lessonPlayer" width="560" height="315" src="//www.youtube.com/embed/kabzAHWU728" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div> 
+            <div class="l-col_6">
+                <div class="b-lesson">
+                    <!--ko if:data.lessons()[activeLesson()] -->
+                    <div class="b-lesson__title" data-bind="text:!data.activeLesson()?'Введение':'Урок&nbsp;' + data.activeLesson()"></div>
+                    <div class="b-lesson__text" data-bind="html: data.lessons()[activeLesson()].text"></div>
+                    <button type="button" class="b-btn b-lesson__btn" data-bind="click: data.nextLesson.bind(null, activeLesson()), visible: activeLesson() < data.lessons().length - 1">Идем дальше</button>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>    
+    </div>
+
+    <div class="b-footer">
+        <div class="l-container">
+            <span>Час кода 2014</span>
+        </div> 
+
+    </div>
+</body>
+
+
+
+</html>

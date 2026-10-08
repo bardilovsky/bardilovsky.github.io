@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Час кода</title>
+    <script src="resources/blocks/blockly_compressed.js"></script>
+    <script src="resources/blocks/blocks_compressed.js"></script>
+    <script src="resources/blocks/javascript_compressed.js"></script>
+    <link type="text/css" rel="stylesheet" href="resources/styles/reset.css">
+    <link type="text/css" rel="stylesheet" href="resources/styles/style.css">
+    <script src="resources/blocks/ru.js"></script>
+    <script src="resources/libs/lodash.min.js"></script>
+    <script src="resources/libs/jquery-2.1.4.min.js"></script>
+    <script src="resources/libs/knockout-3.4.0rc.js"></script>
+    <script src="resources/libs/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script src="resources/libs/fancy/jquery.fancybox.js"></script>
+    <link type="text/css" rel="stylesheet" href="resources/libs/fancy/jquery.fancybox.css">
+    <script src="resources/libs/intro/intro.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="resources/libs/intro/introjs.min.css">
+    <script src="resources/libs/pixi.min.js"></script>
+    <script src="resources/libs/acorn.js"></script>
+    <script src="resources/libs/interpreter.js"></script>
+    <script src="resources/libs/isMobile.min.js"></script>
+    <script src="index.js?w"></script>
+</head>
+
+<body data-bind="style:{backgroundColor: backgroundColor}">
+    <div class="header"></div>
+    <div class="container">
+        <table class="blocklyTable">
+            <tbody>
+                <tr class="blocklyTable-header">
+                    <td class="blocklyTable-left ">
+                        <a href="/" class="blocklyTable-logo">
+													<img src="resources/images/small_logo.png" alt="">
+													</a>
+                    </td>
+                    <td class="blocklyTable-separate"></td>
+                    <td class="blocklyTable-right">
+                        <div class="buttons-wrap">
+                            <ul class="stage-list" data-step="4" data-intro='Ты всегда можешь перейти на любой из уровней
+															<div class="introNextButton introFinish" onclick="javascript: introNextClick()">
+																<div>' data-position="right" data-highlightClass="introRounded" data-tooltipClass="introPopup fourth">
+                                <li class="level1" data-bind="css:{active:($root.currentLesson()==0 || $root.levelsPassed()[0])},click:$root.currentLesson.bind($root,0)"></li>
+                                <li class="level2" data-bind="css:{active:($root.currentLesson()==1 || $root.levelsPassed()[1])},click:$root.currentLesson.bind($root,1)"></li>
+                                <li class="level3" data-bind="css:{active:($root.currentLesson()==2 || $root.levelsPassed()[2])},click:$root.currentLesson.bind($root,2)"></li>
+                                <li class="level4" data-bind="css:{active:($root.currentLesson()==3 || $root.levelsPassed()[3])},click:$root.currentLesson.bind($root,3)"></li>
+                                <li class="level5" data-bind="css:{active:($root.currentLesson()==4 || $root.levelsPassed()[4])},click:$root.currentLesson.bind($root,4)"></li>
+                                <li class="level6" data-bind="css:{active:($root.currentLesson()==5 || $root.levelsPassed()[5])},click:$root.currentLesson.bind($root,5)"></li>
+                                <li class="level7" data-bind="css:{active:($root.currentLesson()==6 || $root.levelsPassed()[6])},click:$root.currentLesson.bind($root,6)"></li>
+                            </ul>
+                            <a class="finishLink" href="certificate.html">
+                                <div class="button finish"></div>
+                            </a>
+                            <ul class="stage-list bonus">
+                                <li class="level8" data-bind="css:{active:($root.currentLesson()==7 || $root.levelsPassed()[7])},click:$root.currentLesson.bind($root,7)">
+                                    <div class="star-bonus"></div>
+                                </li>
+                                <li class="level9" data-bind="css:{active:($root.currentLesson()==8 || $root.levelsPassed()[8])},click:$root.currentLesson.bind($root,8)">
+                                    <div class="star-bonus"></div>
+                                </li>
+                                <li class="level10" data-bind="css:{active:($root.currentLesson()==9 || $root.levelsPassed()[9])},click:$root.currentLesson.bind($root,9)">
+                                    <div class="star-bonus"></div>
+                                </li>
+                                <li class="level11" data-bind="css:{active:($root.currentLesson()==10 || $root.levelsPassed()[10])},click:$root.currentLesson.bind($root,10)">
+                                    <div class="star-bonus"></div>
+                                </li>
+                            </ul>
+                            <div class="mainLevels">Основные уровни</div>
+                            <div class="bonusLevels">Бонусные уровни</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="blocklyTable-firstRow">
+                    <td class="blocklyTable-left">
+                        <div class="repeatOverlay" style="display: none;"></div>
+                        <div id="levelBubblePopup" class="modal levelbubble" style="display: none;">
+                            <div class="arrow-more"></div>
+                            <div class="close-button"></div>
+                            <div class="triangle"></div>
+                            <div class="adviser-small"></div>
+                            <p>Если у тебя не получилось пройти уровень с первого раза, попробуй еще! Нажми «Сбросить», составь новую последовательность блоков и нажми «Запустить программу».</p>
+                        </div>
+                        <div id="tooManyBlocksPopup" class="modal levelbubble" data-bind="visible: toManyBlocks">
+                            <div class="triangle"></div>
+                            <div class="adviser-small"></div>
+                            <p>Ты использовал максимальное количество блоков!</p>
+                        </div>
+                        <div id="portalPopup" class="modal levelbubble" style="display: none;">
+                            <div class="close-button"></div>
+                            <div class="triangle"></div>
+                            <div class="adviser-small"></div>
+                            <div class="portal"></div>
+                            <p>Волшебный портал поможет Искателю Сокровищ мгновенно телепортироваться из одного места игрового поля в другое. Каждый портал имеет вход и выход. Смотри на направление стрелок.</p>
+                        </div>
+                        <div id="arrowPopup" class="modal levelbubble" style="display: none;">
+                            <div class="close-button"></div>
+                            <div class="triangle"></div>
+                            <div class="adviser-small"></div>
+                            <p>Стрелка показывает, в какую сторону смотрит Искатель Сокровищ.</p>
+                        </div>
+                        <div id="tableDiv"></div>
+                    </td>
+                    <td class="blocklyTable-separate" rowspan="2"></td>
+                    <td class="blocklyTable-right" rowspan="2">
+                        <div class="blocksCounter">Осталось блоков:
+                            <span data-bind="text: blocksLeft"></span>
+                        </div>
+                        <div id="blocklyDiv" data-step="3" data-intro='Перетаскивай блоки из левой части окна в правую и соединяй их, чтобы получалась непрерывная цепь шагов.
+																<br>
+																	<br>Чтобы удалить лишние блоки, перетащи их обратно в левую часть окна.
+																		<div class="introNextButton introNext" onclick="javascript: introNextClick()">
+																			<div>' data-position="left" data-tooltipClass="introPopup third"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="blocklyTable-left">
+                        <div class="blocklyText">
+                            <div id="controlsBlock" class="blocklyText-control">
+                                <div class="button start" data-bind="click:buttonClick, css:{'inactive': toManyBlocks() || clickPause(), 'reset': blockStatus()||finish()||fail()}" data-step="1" data-intro='Составь свою последовательность блоков и нажми «Запустить программу», чтобы персонаж начал свое путешествие.
+																						<div class="introNextButton introNext" onclick="javascript: introNextClick()">
+																							<div>' data-position="top" data-highlightClass="introRounded" data-tooltipClass="introPopup first"></div>
+                                <div class="button info" data-step="2" data-intro='Здесь ты всегда можешь прочитать задание.
+																								<div class="introNextButton introNext" onclick="javascript: introNextClick()">
+																									<div>' data-position="right" data-highlightClass="introRounded" data-tooltipClass="introPopup second"></div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <xml id="toolbox" style="display: none">
+            <block type="hoc_forward"></block>
+            <block type="hoc_backward"></block>
+            <block type="hoc_turn_left"></block>
+            <block type="hoc_turn_right"></block>
+            <block type="hoc_wear_bandana"></block>
+            <block type="hoc_item_chest"></block>
+            <block type="hoc_item_wall"></block>
+            <block type="hoc_item_portal"></block>
+            <block type="hoc_item_empty"></block>
+            <block type="hoc_item_star"></block>
+            <block type="hoc_item_track"></block>
+            <block type="hoc_check_forward"></block>
+            <block type="hoc_check_backward"></block>
+            <block type="hoc_check_left"></block>
+            <block type="hoc_check_right"></block>
+            <block type="hoc_check_bandana_color"></block>
+            <block type="controls_if"></block>
+            <block type="colour_picker"></block>
+            <block type="logic_negate"></block>
+        </xml>
+    </div>
+    <div style="display: none;">
+        <div id="hello" class="modal hello">
+            <div class="close-button fancy-close"></div>
+            <div class="triangle"></div>
+            <div class="adviser"></div>
+            <div class="runner"></div>
+            <h3>Добро пожаловать в мир сокровищ!</h3>
+            <ul class="items">
+                <li class="item1">Помоги Искателю Сокровищ собрать все золото и драгоценные камни! Во время игры ты получишь первые навыки программирования. Это просто! </li>
+                <li class="item2">Твоя задача — составить такую последовательность блоков, чтобы Искатель Сокровищ добрался до сундука с золотом.</li>
+                <li class="item3">Если хочешь усложнить задание, придумай, как сначала забрать драгоценный камень!</li>
+            </ul>
+            <div class="bottomButtonBlock centered">
+                <p class="message">Ты готов выполнить первое задание?</p>
+                <div class="button hello"></div>
+            </div>
+        </div>
+        <div id="bigSuccess" class="modal bigSuccess">
+            <div class="close-button fancy-close"></div>
+            <div class="wrap lightgray">
+                <h3 class="wking">Поздравляю!
+                    <div class="king"></div>
+                </h3>
+                <div class="content">
+                    <ul class="items-absolute">
+                        <li class="item5"></li>
+                        <li class="item4"></li>
+                    </ul>
+                    <p class="welldonetext">Этот уровень был очень сложный, но ты справился! Сегодня всего лишь за один Час Кода ты овладел основными навыками программирования, а Искатель Сокровищ нашел все сундуки с золотом. Надеюсь, тебе было интересно!</p>
+                    <code class="code"></code>
+                    <!-- <div class="additionalbuttons"><div class="button save"></div><div class="button print"></div></div>-->
+                </div>
+            </div>
+            <div class="wrap bottom centered">
+                <p class="message">Расскажи друзьям, что ты прошел
+                    <br>Час Кода 2015!
+                </p>
+                <div class="button share"></div>
+                <div class="button continue"></div>
+                <a class="button save" style="display: none;"></a>
+            </div>
+        </div>
+        <div id="danger" class="modal lightgray danger">
+            <div class="close-button fancy-close"></div>
+            <h3>Осторожно!</h3>
+            <p>К сожалению, Искатель Сокровищ не умеет проходить сквозь стены! Попробуй составить алгоритм еще раз так, чтобы обойти все препятствия.</p>
+            <p class="message">Попробуешь пройти
+                <br>уровень еще раз?
+            </p>
+            <div class="button">Да!</div>
+        </div>
+        <div id="task" class="modal task">
+            <div class="close-button fancy-close"></div>
+            <div class="level-badge"></div>
+            <h3>Уровень 1</h3>
+            <p class="messageText"></p>
+            <div class="button next"></div>
+        </div>
+        <div id="success" class="modal success lightgray">
+            <div class="close-button fancy-close"></div>
+            <h3>Молодец!</h3>
+            <p class="welldonetext">Искатель Сокровищ добрался до сундука! Посмотри, как выглядит твой первый код:</p>
+            <code class="code"> Этот уровень был очень сложный, но ты справился! Сегодня всего лишь за один Час Кода ты овладел основными навыками программирования, а Искатель Сокровищ нашел все сундуки с золотом. Надеюсь, тебе было интересно! </code>
+            <p class="message">Ты готов двигаться дальше?</p>
+            <div class="button next"></div>
+        </div>
+        <div id="successDouble" class="modal bigSuccess lightgray">
+            <div class="close-button fancy-close"></div>
+            <div class="wrap lightgray">
+                <h3 class>Молодец!</h3>
+                <div class="content">
+                    <ul class="items-absolute">
+                        <li class="item5"></li>
+                        <li class="item4"></li>
+                    </ul>
+                    <p class="welldonetext">Искатель Сокровищ добрался до сундука!
+                        <br>Посмотри, как выглядит твой первый код:
+                    </p>
+                    <code class="code"> Этот уровень был очень сложный, но ты справился! Сегодня всего лишь за один Час Кода ты овладел основными навыками программирования, а Искатель Сокровищ нашел все сундуки с золотом. Надеюсь, тебе было интересно! </code>
+                    <p class="welldoneaftercode"></p>
+                </div>
+            </div>
+            <div class="wrap bottom centered">
+                <p class="message">Ты готов двигаться дальше?</p>
+                <div class="button next"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

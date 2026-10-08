@@ -1,0 +1,1213 @@
+@font-face {
+  font-family: 'wf_segoe-ui-light';
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/light/latest.eot');
+    src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/light/latest.eot?#iefix') format('embedded-opentype'), 
+    url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/light/latest.woff') format('woff'), 
+    url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/light/latest.ttf') format('truetype'), 
+    url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/light/latest.svg#web') format('svg');
+  font-weight: light;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'wf_segoe-ui-semilight';
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semilight/latest.eot');
+    src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semilight/latest.eot?#iefix') format('embedded-opentype'), 
+    url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semilight/latest.woff') format('woff'), 
+    url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semilight/latest.ttf') format('truetype'), 
+    url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semilight/latest.svg#web') format('svg');
+  font-weight: semilight;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'wf_segoe-ui-normal';
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/normal/latest.eot');
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/normal/latest.eot?#iefix') format('embedded-opentype'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/normal/latest.woff') format('woff'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/normal/latest.ttf') format('truetype'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/normal/latest.svg#web') format('svg');
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'wf_segoe-ui-semibold';
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semibold/latest.eot');
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semibold/latest.eot?#iefix') format('embedded-opentype'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semibold/latest.woff') format('woff'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semibold/latest.ttf') format('truetype'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/semibold/latest.svg#web') format('svg');
+  font-weight: semibold;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'wf_segoe-ui-bold';
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/bold/latest.eot');
+  src: url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/bold/latest.eot?#iefix') format('embedded-opentype'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/bold/latest.woff') format('woff'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/bold/latest.ttf') format('truetype'), 
+        url('https://c.s-microsoft.com/static/fonts/segoe-ui/cyrillic/bold/latest.svg#web') format('svg');
+  font-weight: bold;
+  font-style: normal
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #481f0f;
+    font-family: wf_segoe-ui-normal,Tahoma,Verdana,Arial,sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.container {
+    padding: 20px;
+}
+
+.blocklyTable {
+    width: 100%;
+    table-layout: fixed;
+    border: 0;
+    padding :0;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+    .blocklyTable .blocklyTable-firstRow {
+        height: 512px;
+    }
+
+    .blocklyTable .blocklyTable-left {
+        width: 512px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .blocklyTable .blocklyTable-right {
+        font-size: 22px;
+        font-weight: bold;
+        font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+        position: relative;
+    }
+
+    .blocklyTable .blocklyTable-right ul {
+        margin-right: 15px;
+        vertical-align: top;
+    }
+
+    .blocklyTable .blocklyTable-right .button.finish {
+        background-image: url(../images/button-finish.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 244px;
+        line-height: 43px;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+        margin: auto;
+        font-size: 22px;
+        font-weight: bold;
+        font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+        display: inline-block;
+        margin-right: 17px;
+        height: 44px;
+    }
+
+    .blocklyTable .blocklyTable-right .button.finish:hover {
+        background-image: url(../images/button-finish-hover.png);
+    }
+
+    .blocklyTable .blocklyTable-right .button.finish.active {
+        background-image: url(../images/button-finish-active.png);
+    }
+
+    .blocklyTable .blocklyTable-right .button.bonus {
+        background-image: url(../images/button-bonus.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 262px;
+        line-height: 43px;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+        margin: auto;
+        font-size: 22px;
+        font-weight: bold;
+        font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+        display: inline-block;
+        margin-right: 0px;
+        height: 44px;
+    }
+
+    .blocklyTable .blocklyTable-right .button.bonus:hover {
+        background-image: url(../images/button-bonus-hover.png);
+    }
+    .blocklyTable .blocklyTable-right .button.bonus.active {
+        background-image: url(../images/button-bonus-pressed.png);
+    }
+
+    .blocklyTable .blocklyTable-separate {
+       width: 10px;
+    }
+
+
+    .blocklyTable td {
+        vertical-align: top;
+    }
+
+    .blocklyTable-logo {
+        margin-bottom: 20px;
+        display: inline-block;
+        pointer-events: all;
+    }
+
+    .blocklyTable-header .blocklyTable-left {
+        pointer-events: none;
+    }
+
+.blocklyText {
+    padding: 30px;
+    background-color: #fff;
+}
+
+    .blocklyText-inner {
+        font-size: 18px;
+        line-height: 24px;
+        color: #191919;
+
+    }
+
+    .blocklyText-control {
+    } 
+
+    .blocklyText-control .button.start {
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 286px;
+        height: 43px;
+        cursor: pointer;
+    }
+
+.header {
+    padding-left: 54px;
+}
+
+#blocklyDiv{
+    display: inline-block;
+    vertical-align: top;
+    height: 618px;
+    width: 100%;
+}
+
+
+#tableDiv{
+    display: block;
+    height: 512px;
+    width: 512px;
+}
+
+
+.currentStage {
+    line-height: 67px;
+    height: 67px;
+    width: 195px;
+    display: inline-block;
+    background-image: url(../images/button-level.png);
+    background-position: left;
+    color: white;
+    cursor: pointer;
+}
+.currentStage > div {
+    display: inline-block;
+    text-align: center;
+}
+.currentStage .number {
+    width: 67px;
+    margin-right: 4%;
+}
+.modal {
+    z-index: 100;
+    /*position: absolute;
+    top: 20%;
+    left: 30%;*/
+    margin: auto;
+    border: 4px solid rgba(0,0,0,.1);
+    border-radius: 20px;
+    background-color: white;
+    /*box-sizing: content-box;
+    -webkit-box-sizing: content-box;*/
+    width: 525px;
+    padding-top: 35px;
+    padding-left: 20px;
+    padding-right: 20px;
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box;
+}
+.modal h3 {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+    color: #2a231a;
+    text-align: center;
+    margin-bottom: 44px;
+    position: relative;
+}
+.modal .close-button {
+    height: 68px;
+    width: 68px;
+    background-image: url(../images/button-close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -28px;
+    right: -20px;
+    cursor: pointer;
+}
+.modal .triangle {
+    height: 38px;
+    width: 32px;
+    background-image: url(../images/bubble-triangle.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 275px;
+    right: -28px;
+}
+.modal .adviser {
+    height: 371px;
+    width: 245px;
+    background-image: url(../images/character-adviser.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 95px;
+    right: -280px;
+}
+
+.modal .runner {
+    height: 459px;
+    width: 670px;
+    background-image: url(../images/character-runner.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 205px;
+    left: -700px;
+}
+.modal .king {
+    height: 191px;
+    width: 100%;
+    background-image: url(../images/character-king.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -105px;
+}
+.modal .items li {
+    padding-left: 115px;
+    background-position: lefttop;
+    background-repeat: no-repeat;
+    padding-bottom: 35px;
+    font-size: 18px;
+    color: #2a231a;
+}
+.modal li.item1 {
+    background-image: url(../images/item-1.png);
+    background-position: 0px 18px;
+}
+.modal li.item2 {
+    background-image: url(../images/item-2.png);
+    background-position: 15px 0px;
+}
+.modal li.item3 {
+    background-image: url(../images/item-3.png);
+    background-position: 18px 0px;
+}
+.modal li.item4 {
+    background-image: url(../images/item-4.png);
+}
+.modal li.item5 {
+    background-image: url(../images/item-5.png);
+}
+.modal.bigSuccess {
+    padding-top: 0px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 750px;
+    margin-top: 85px;
+}
+.modal.bigSuccess h3 {
+    padding-top: 35px;
+}
+.modal.bigSuccess h3.wking {
+    padding-top: 100px;
+}
+.modal.bigSuccess .wrap {
+    padding-left: 55px;
+    padding-right: 55px;
+    padding-bottom: 28px;
+    border-radius: 20px 20px 0 0;
+}
+.content {
+    position: relative;
+    padding-left: 115px;
+    min-height: 220px;
+}
+.items-absolute {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.items-absolute li {
+    height: 105px;
+    width: 80px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 10px;
+}
+.bigSuccess h3 {
+    margin-bottom: 25px;
+}
+.modal p {
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 20px;
+    padding-right: 15px;
+}
+.lightgray {
+    background-color: #eaeaea;
+}
+.modal .wrap.bottom {
+    background-color: #d6d6d6;
+    padding-bottom: 50px;
+    border-radius: 0 0 20px 20px;
+}
+.modal .message {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+    text-align: center;    
+    color: #191919;
+    padding-top: 20px;
+    margin-bottom: 35px;
+    line-height: 26px;
+}
+.centered {
+    text-align: center;
+}
+.modal .button {
+    background-image: url(../images/button-share.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 286px;
+    line-height: 43px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    margin: auto;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+}
+.modal.danger {
+    padding-bottom: 75px;
+    padding-left: 55px;
+    padding-right: 55px;
+    width: 660px;
+}
+.modal.danger h3 {
+    color: #ac0000;
+    margin-bottom: 25px;
+}
+.modal.task {
+    padding-bottom: 75px;
+    padding-left: 55px;
+    padding-right: 55px;
+    width: 750px;
+    margin-top: 45px;
+}
+.modal.task h3 {
+    color: #191919;
+    margin-bottom: 25px;
+}
+.modal p.text {
+    margin-bottom: 65px;
+}
+.modal.success {
+    width: 660px;
+    padding-left: 55px;
+    padding-right: 55px;
+    padding-bottom: 75px;
+}
+.modal.success h3 {
+    margin-bottom: 25px;
+}
+
+.modal.levelbubble {
+    width: 320px;
+    position: absolute;
+    top: 220px;
+    left: 50px;
+    padding: 35px 20px;
+}
+.modal .adviser-small {
+    height: 194px;
+    width: 128px;
+    background-image: url(../images/character-adviser-small.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -20px;
+    right: -170px;
+}
+.modal .arrow-more {
+    height: 14px;
+    width: 29px;
+    background-image: url(../images/arrow-more.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 252px;
+    left: 187px;
+}
+.modal.levelbubble .triangle {
+    top: 55px;
+    right: -32px;
+}
+.modal.levelbubble .close-button {
+    top: -41px;
+    right: -29px;
+}
+.modal.levelbubble p {
+    margin: 0;
+}
+.fancybox-inner {
+    overflow: visible !important;
+}
+.wmountain {
+    background-image: url(../images/mountain.png);
+    background-repeat: no-repeat;
+    background-position: top;
+}
+.bottomButtonBlock {
+    position: absolute;
+    bottom: -125px;
+    width: 485px;
+}
+.bottomButtonBlock .message {
+    margin-bottom: 25px;
+}
+.code {
+    padding: 10px 7px;
+    background-color: white;
+    border: 1px solid;
+    border-radius: 5px;
+    margin: auto;
+    display: block;
+    width: 400px;
+    white-space: pre;
+    word-wrap: break-word;
+    max-height: 200px;
+    overflow-y: auto; 
+}
+.white {
+    background-color: #fff;
+}
+
+.button.finish {
+    background-image: url(../images/button-finish.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 44px;
+    width: 244px;
+}
+.button.share {
+    background-image: url(../images/button-share.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 44px;
+    width: 191px;
+    display: inline-block;
+    margin: 0 10px 0 10px;
+}
+.button.save {
+    background-image: url(../images/button-save.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 44px;
+    width: 191px;
+    display: inline-block;
+    margin: 0 10px 0 10px;
+}
+.button.continue {
+    background-image: url(../images/button-continue.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 44px;
+    width: 191px;
+    display: inline-block;
+    margin: 0 10px 0 10px;
+}
+.button.next {
+    background-image: url(../images/button-next.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 44px;
+    width: 247px;
+}
+.buttons-wrap {
+    margin-top: 40px;
+    min-width: 915px;
+    display: inline-block;
+    position: relative;
+    margin-left: -335px;
+}
+/*@media (max-width: 1600px) {
+    .buttons-wrap {
+        margin-left: -320px;
+    }
+}*/
+#blocklyDiv {
+    min-width: 1500px;
+}
+.button.start {
+    background-image: url(../images/button-start.png);
+    float: left;
+    margin-left: 81px;
+}
+.button.start.reset {
+    background-image: url(../images/button-reset.png);
+}
+.button.start.reset:hover {
+    background-image: url(../images/button-reset-hover.png);
+}
+.button.start.reset.active {
+    background-image: url(../images/button-reset-active.png);
+}
+.button.start.reset.inactive {
+    background-image: url(../images/button-reset-inactive.png);
+}
+.button.start:hover {
+    background-image: url(../images/button-start-hover.png);
+}
+.button.start.active {
+    background-image: url(../images/button-start-active.png);
+}
+.button.start.inactive {
+    background-image: url(../images/button-start-inactive.png);
+}
+.button.info {
+    background-image: url(../images/button-info.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 46px;
+    width: 46px;
+    float: right;
+    cursor: pointer;
+}
+.button.info:hover {
+    background-image: url(../images/button-info-hover.png);
+}
+.button.forward {
+    background-image: url(../images/button-forward.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 36px;
+    width: 222px;
+    line-height: 36px;
+}
+.level-badge {
+    position: absolute;
+    background-image: url(../images/level-1.png);
+    height: 200px;
+    width: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: -100px;
+    left: 273px;
+}
+#task h3 {
+    padding-top: 50px;
+}
+.fancybox-skin {
+    background: none !important;
+}
+.fancybox-opened .fancybox-skin {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+b {
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+}
+.bigSuccess .code {
+    margin: 0;
+}
+.additionalbuttons {
+    margin-top: 20px;
+}
+.additionalbuttons > div {
+    display: inline-block;
+    margin-right: 13px;
+}
+
+.button.print {
+    background-image: url(../images/button-print.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 36px;
+    width: 202px;
+    /*line-height: 36px;*/
+}
+.blocksCounter {
+    position: absolute;
+    left: 270px;
+    top: 5px;
+    font-weight: normal;
+    font-family: wf_segoe-ui-normal,Tahoma,Verdana,Arial,sans-serif;
+    font-size: 18px;
+    width: 200px;
+}
+.introjs-helperNumberLayer {
+    display: none;
+}
+/*.introjs-button.introjs-skipbutton {
+    display: none;
+}*/
+
+.blocklyList {
+
+}
+.blocklyList li {
+    background-repeat: no-repeat;
+    min-height: 43px;
+}
+.blocklyList .step {
+    padding-left: 90px;
+    background-image: url(../images/blockly/step.png);
+    background-position: 3px 3px;
+}
+.blocklyList .puton {
+    padding-left: 205px;
+    background-image: url(../images/blockly/put-on.png);
+    background-position: 3px 3px;
+    margin-bottom: 20px;
+}
+.blocklyList .headcolor {
+    padding-left: 205px;
+    background-image: url(../images/blockly/head-color.png);
+    background-position: 3px 3px;
+}
+.blocklyList .color {
+    padding-left: 205px;
+    background-image: url(../images/blockly/color.png);
+    background-position: 3px 3px;
+}
+.blocklyList .and {
+    padding-left: 215px;
+    background-image: url(../images/blockly/or-expanded.png);
+    background-position: 3px 3px;
+    min-height: 80px;
+}
+.blocklyList .left {
+    padding-left: 130px;
+    background-image: url(../images/blockly/left.png);
+    background-position: 3px 3px;
+}
+.blocklyList .directions {
+    padding-left: 270px;
+    padding-top: 27px;
+    background-image: url(../images/blockly/directions.png);
+    background-position: 3px 3px;
+    min-height: 94px;
+}
+.blocklyList .right {
+    padding-left: 130px;
+    background-image: url(../images/blockly/right.png);
+    background-position: 3px 3px;
+}
+.blocklyList .gem {
+    padding-left: 130px;
+    background-image: url(../images/blockly/gem.png);
+    background-position: 3px 3px;
+}
+.blocklyList .while {
+    padding-left: 227px;
+    background-image: url(../images/blockly/while.png);
+    background-position: 3px 3px;
+    min-height: 80px;
+}
+.blocklyList .infront {
+    padding-left: 125px;
+    background-image: url(../images/blockly/in-front.png);
+    background-position: 3px 3px;
+}
+.blocklyList .inback {
+    padding-left: 125px;
+    background-image: url(../images/blockly/in-back.png);
+    background-position: 3px 3px;
+}
+.blocklyList .wall {
+    padding-left: 125px;
+    background-image: url(../images/blockly/wall.png);
+    background-position: 3px 3px;
+}
+.blocklyList .not {
+    padding-left: 125px;
+    background-image: url(../images/blockly/not.png);
+    background-position: 3px 3px;
+}
+.blocklyList .if {
+    padding-left: 310px;
+    background-image: url(../images/blockly/if-expanded.png);
+    background-position: 3px 3px;
+    min-height: 230px;
+}
+.blocklyList .iffilled {
+    padding-left: 293px;
+    background-image: url(../images/blockly/if-filled.jpg);
+    background-position: 3px 3px;
+    min-height: 113px;
+}
+.blocklyList .ifchanged {
+    padding-left: 350px;
+    background-image: url(../images/blockly/if-changed.png);
+    background-position: 3px 3px;
+    min-height: 290px;
+}
+.blocklyList .stepforward {
+    padding-left: 130px;
+    background-image: url(../images/blockly/step-forward.png);
+    background-position: 3px 3px;
+}
+.blocklyList .stepbackwards {
+    padding-left: 130px;
+    background-image: url(../images/blockly/step-backwards.png);
+    background-position: 3px 3px;
+}
+.blocklyList .turnleft {
+    padding-left: 180px;
+    background-image: url(../images/blockly/turn-left.png);
+    background-position: 3px 3px;
+}
+.blocklyList .turnright {
+    padding-left: 180px;
+    background-image: url(../images/blockly/turn-right.png);
+    background-position: 3px 3px;
+}
+.blocklyList .whilechest {
+    padding-left: 260px;
+    background-image: url(../images/blockly/while-chest.png);
+    background-position: 3px 3px;
+    min-height: 55px;
+}
+.blocklyList .bigcode {
+    padding-left: 260px;
+    background-image: url(../images/blockly/bigcode.png);
+    background-position: 3px 3px;
+    min-height: 144px;
+}
+.blocklyList .colorexpanded {
+    padding-left: 205px;
+    background-image: url(../images/blockly/color-expanded.png);
+    background-position: 3px 3px;
+    min-height: 85px;
+}
+p.messageText {
+    overflow-y: auto;
+    max-height: 300px;
+}
+.introNext {
+    height: 40px;
+    width: 126px;
+    background-image: url(../images/intro-next.png);
+    display: block;
+    margin: auto;
+    cursor: pointer;
+}
+.introFinish {
+    height: 40px;
+    width: 160px;
+    background-image: url(../images/intro-finish.png);
+    display: block;
+    margin: auto;
+    cursor: pointer;
+}
+.introPopup {
+    padding: 30px !important;
+    border-radius: 30px !important;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+}
+.introPopup.first {
+    width: 420px;
+    max-width: 420px;
+    left: -62px !important;
+    bottom: 80px !important;
+}
+.introPopup.first .introjs-arrow.bottom {
+    bottom: -40px;
+    left: 189px;
+}
+.introPopup .introjs-arrow {
+    border: 20px solid white;
+    border-top-color: white;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+.introPopup.second {
+    left: 86px !important;
+    top: -77px !important;
+    width: 280px;
+    max-width: 280px;
+}
+.introPopup.second .introjs-arrow.left-bottom {
+    left: -40px;
+    bottom: 36px;
+    border-top-color: transparent;
+    border-right-color: white;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+.introPopup.third {
+    left: -287px !important;
+    top: 12px !important;
+    width: 250px;
+    max-width: 250px;
+}
+.introPopup.third .introjs-arrow.right {
+    right: -40px;
+    top: 117px;
+}
+.introPopup.fourth {
+    left: 410px !important;
+    top: -22px !important;
+    width: 300px;
+    max-width: 300px;
+}
+.introPopup.fourth .introjs-arrow.left {
+    left: -40px;
+    top: 30px;
+    border-top-color: transparent;
+    border-right-color: white;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+.introNextButton {
+    cursor: pointer;
+    margin-top: 25px;
+}
+.introRounded {
+    border-radius: 30px !important;
+}
+.stage-list {
+    display: inline-block;
+}
+
+.stage-list > li{
+    height: 44px;
+    width: 42px;
+    background-image: url(../images/button-round.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    cursor: pointer;
+    line-height: 44px;
+    color: white;
+    text-align: center;
+    position: relative;
+    margin-left: 5px;
+}
+.stage-list .level1 {
+    background-image: url(../images/level-button-1.png);
+}
+.stage-list .level1:hover {
+    background-image: url(../images/level-button-1-hover.png);
+}
+.stage-list .level1.active {
+    background-image: url(../images/level-button-1-active.png);
+}
+.stage-list .level2 {
+    background-image: url(../images/level-button-2.png);
+}
+.stage-list .level2:hover {
+    background-image: url(../images/level-button-2-hover.png);
+}
+.stage-list .level2.active {
+    background-image: url(../images/level-button-2-active.png);
+}
+.stage-list .level3 {
+    background-image: url(../images/level-button-3.png);
+}
+.stage-list .level3:hover {
+    background-image: url(../images/level-button-3-hover.png);
+}
+.stage-list .level3.active {
+    background-image: url(../images/level-button-3-active.png);
+}
+.stage-list .level4 {
+    background-image: url(../images/level-button-4.png);
+}
+.stage-list .level4:hover {
+    background-image: url(../images/level-button-4-hover.png);
+}
+.stage-list .level4.active {
+    background-image: url(../images/level-button-4-active.png);
+}
+.stage-list .level5 {
+    background-image: url(../images/level-button-5.png);
+}
+.stage-list .level5:hover {
+    background-image: url(../images/level-button-5-hover.png);
+}
+.stage-list .level5.active {
+    background-image: url(../images/level-button-5-active.png);
+}
+.stage-list .level6 {
+    background-image: url(../images/level-button-6.png);
+}
+.stage-list .level6:hover {
+    background-image: url(../images/level-button-6-hover.png);
+}
+.stage-list .level6.active {
+    background-image: url(../images/level-button-6-active.png);
+}
+.stage-list .level6 {
+    background-image: url(../images/level-button-6.png);
+}
+.stage-list .level6:hover {
+    background-image: url(../images/level-button-6-hover.png);
+}
+.stage-list .level6.active {
+    background-image: url(../images/level-button-6-active.png);
+}
+.stage-list .level7 {
+    background-image: url(../images/level-button-7.png);
+}
+.stage-list .level7:hover {
+    background-image: url(../images/level-button-7-hover.png);
+}
+.stage-list .level7.active {
+    background-image: url(../images/level-button-7-active.png);
+}
+.stage-list .level8 {
+    background-image: url(../images/level-button-8.png);
+}
+.stage-list .level8:hover {
+    background-image: url(../images/level-button-8-hover.png);
+}
+.stage-list .level8.active {
+    background-image: url(../images/level-button-8-active.png);
+}
+.stage-list .level9 {
+    background-image: url(../images/level-button-9.png);
+}
+.stage-list .level9:hover {
+    background-image: url(../images/level-button-9-hover.png);
+}
+.stage-list .level9.active {
+    background-image: url(../images/level-button-9-active.png);
+}
+.stage-list .level10 {
+    background-image: url(../images/level-button-10.png);
+}
+.stage-list .level10:hover {
+    background-image: url(../images/level-button-10-hover.png);
+}
+.stage-list .level10.active {
+    background-image: url(../images/level-button-10-active.png);
+}
+.stage-list .level11 {
+    background-image: url(../images/level-button-11.png);
+}
+.stage-list .level11:hover {
+    background-image: url(../images/level-button-11-hover.png);
+}
+.stage-list .level11.active {
+    background-image: url(../images/level-button-11-active.png);
+}
+.repeatOverlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(1,1,1,0.5);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(../images/repeat-counter-1.png);
+}
+.finishLink {
+    display: inline-block;
+}
+.repeatOverlay.second {
+    background-image: url(../images/repeat-counter-2.png);
+}
+.repeatOverlay.third {
+    background-image: url(../images/repeat-counter-3.png);
+}
+.portal {
+    height: 64px;
+    width: 64px;
+    background-image: url(../images/portal-one-state.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    /*line-height: 44px;*/
+    /*color: white;*/
+    /*text-align: center;*/
+    /*margin-right: 3px;*/
+}
+#portalPopup p {
+    padding-left: 70px;
+}
+.mainLevels {
+    position: absolute;
+    top: -30px;
+    left: 106px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+}
+.bonusLevels {
+    position: absolute;
+    top: -30px;
+    left: 650px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: wf_segoe-ui-bold,Tahoma,Verdana,Arial,sans-serif;
+}
+.star-bonus {
+    height: 18px;
+    width: 18px;
+    background-image: url(../images/star-bonus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    position: absolute;
+    right: -2px;
+    top: -2px;
+}
+.button.hello {
+    width: 267px;
+    height: 44px;
+    background-image: url(../images/button-begin.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.modal.hello::before {
+  content: "";
+  background-image: url(../images/mountain.png);
+  height: 997px;
+  width: 941px;
+  position: absolute;
+  z-index: -10;
+  top: -110px;
+  left: -218px;
+}
+#arrowPopup {
+    top: 65px;
+}
+.mobileMessage {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 150%;
+    background-color: white;
+    z-index: 9999999;
+    text-align: center;
+    
+    background-image: url(../images/mobile-message-bg.png);
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+}
+.mobileMessage .mobileContent {
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
+.mobileMessage p {
+    line-height: 24px;
+    font-size: 24px;
+    margin-bottom: 17px; 
+    width: 430px;
+    margin: auto;
+}
+.mobileMessage .proceedButton {
+    cursor: pointer;
+    background-image: url(../images/mobile-message-proceed.png);
+    width: 279px;
+    height: 46px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    margin-bottom: 17px; 
+    margin-top: 50px;
+}
+.mobileMessage .backButton {
+    cursor: pointer;
+    background-image: url(../images/mobile-message-back.png);
+    width: 279px;
+    height: 46px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    margin-bottom: 17px; 
+}
+.mobileMessage .chest {
+    position: fixed;
+    background-image: url(../images/mobile-message-chest.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 368px;
+    bottom: -100px;
+    width: 100%;
+}
+@media (max-height: 750px) {
+    .mobileMessage .chest {
+        top: 475px;
+    }
+}
+@media (max-width: 600px) {
+    .mobileMessage .chest {
+        /*height: 184px;*/
+    }
+    .mobileMessage .mobileContent {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .mobileMessage p {
+        width: 240px;
+    }
+}
+@media (max-height: 400px) {
+    .mobileMessage .mobileContent {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+.mobileMessage .mobileContentWrap {
+    height: 67%;
+    overflow-y: auto;
+}
+.blocklySvg {
+    width: 100%;
+    height: 100%;
+}

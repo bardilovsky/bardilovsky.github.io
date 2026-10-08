@@ -1,0 +1,212 @@
+<!doctype html>
+<!--[if IE 7]>
+<html class="ie7 lt-ie10 lt-ie9 lt-ie8 no-js" lang="ru"><![endif]-->
+<!--[if IE 8]>
+<html class="ie8 lt-ie10 lt-ie9 no-js" lang="ru"><![endif]-->
+<!--[if IE 9 ]>
+<html class="ie9 lt-ie10 no-js" lang="ru"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js  " lang="ru">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <title>Всероссийская образовательная акция «Час кода 2017»</title>
+  <meta content="Необычный урок информатики пройдет с 4 по 10 декабря в рамках акции «Час кода 2017». Во всех школах страны! Программирование — это проще, чем кажется. Попробуй и ты!" name="description">
+  <meta content="" name="keywords">
+  <meta content="telephone=no" name="format-detection">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="HandheldFriendly" content="true">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+  <meta property="og:title" content="Всероссийская образовательная акция «Час кода 2017»">
+  <meta property="og:site_name" content="Час кода 2016">
+  <meta property="og:url" content="http://www.coderussia.ru/">
+  <meta property="og:description" content="Необычный урок информатики пройдет с 4 по 10 декабря в рамках акции «Час кода 2017». Во всех школах страны! Программирование — это проще, чем кажется. Попробуй и ты!">
+  <meta property="og:image" content="images/sharedimg.jpg">
+  <meta property="og:image" content="">
+
+  <meta name="yandex-verification" content="646b267d22b8cdea" />
+  <meta name="google-site-verification" content="01IREZHCe65VrCLItSCMGLc6glWHVULaJNp7ax8X_U0" />
+
+  <link href="stylesheets/style.css" rel="stylesheet" type="text/css">
+  <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Neucha|Roboto:300,400,700&amp;subset=cyrillic" rel="stylesheet">
+</head><body class="c-page c-page--newindex">
+  <header class="c-header">
+    <div class="l-container">
+      <div class="c-header__inner-2017">
+        <div class="c-header__col c-header__col--logo">
+  <a href="//часкода.рф" class="c-logo">
+    <img class="c-logo__img" src="images/logo_hoc.png" alt="Час Кода 2017">
+    <span class="c-logo__text">4-10 декабря</span>
+  </a>
+</div>
+
+
+<div class="c-header__col"> 
+  <nav class="c-nav__newindex"><a href="teachers.html" class="c-nav__link c-nav__link-2017">ПРЕПОДАВАТЕЛЯМ</a> 
+  </nav> 
+</div> 
+
+<div class="c-header__col">
+  <nav class="c-nav__newindex">
+      <div class="c-siteselect c-nav__link c-nav__link-2017 c-nav__link-bb">Прошедшие&nbsp;акции
+        <div class="c-siteselect__block">
+			  
+			
+			  
+				  
+			
+			  
+				  <a href="hoc2016.html" class="c-siteselect__opt c-siteselect__opt--hidden" target="_blank">2016</a>
+				  
+			
+			  
+				  <a href="hoc2015.html" class="c-siteselect__opt c-siteselect__opt--hidden" target="_blank">2015</a>
+				  
+			
+			  
+				  <a href="hoc2014.html" class="c-siteselect__opt c-siteselect__opt--hidden" target="_blank">2014</a>
+				  
+			
+			  
+			
+			  
+			
+			  
+			
+			  
+			
+			  
+			
+			  
+			
+			  
+			
+			  
+			</div>
+      </div>
+  </nav>
+</div>
+
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="printImgContainer"></div>
+    
+  <main class="l-container bg-img">
+    <div class="l-row">
+      <div class="l-col--md-12">
+        <h1 class="c-intro__title">До&nbsp;&laquo;Часа кода&raquo; осталось <span id="countDays"></span></h1>
+        <div class="c-countdown-newindex">
+          <img class="c-countdown__frame" src="images/frame.png" alt="">
+          <div class="c-countdown__block" id="countHours"></div>
+          <div class="c-countdown__block" id="countMinutes"></div>
+          <div class="c-countdown__block" id="countSeconds"></div>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+ 
+  </div>
+
+  <div class="c-notify-2017">Смотри видео, проходи тренажер &mdash; стань участником акции #ЧасКода 2017! Жду тебя и&nbsp;твоих друзей 4&nbsp;декабря на&nbsp;сайте &laquo;часкода.рф&raquo;!</div>
+
+  </main>
+  
+  <footer class="c-footer " >
+    <div class="l-container">
+      <div class="c-footer__inner">
+        <div class="c-footer__col c-footer__col--copy">
+          <div class="c-footer__copy">Час кода 2017</div>
+        </div>
+        <div class="c-footer__col">
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> 
+  <script src="javascripts/moment.min.js"></script>
+  <script>
+
+    (function() {
+      var eventTime = moment([2017, 11, 4]); 
+      var currentTime = moment(); 
+      var diffTime = eventTime.diff(currentTime);
+      var duration = moment.duration(diffTime, 'milliseconds');
+      var interval = 1000;
+      var names = [
+        ["день","дня","дней"],
+        ["час","часа","часов"],
+        ["минута","минуты","минут"],
+        ["секунда","секунды","секунд"],
+      ]
+      
+      var days = $('#countDays');
+      var hours = $('#countHours');
+      var minuts = $('#countMinutes');
+      var seconds = $('#countSeconds');
+
+      function splitByDigits (val, arr){
+        var result = "";
+        var slicer = val.toString();
+        var slicer_min = parseInt(slicer.slice(-1));
+
+        result = "<span>" + slicer + " </span>";
+
+        if(slicer_min == 1 && (val < 10 || val > 20)) {
+          result += '<span>'+ arr[0] +'</span>'
+        } else if((slicer_min == 2 || slicer_min == 3 || slicer_min == 4) && (val < 10 || val > 20)) {
+          result += '<span>'+ arr[1] +'</span>'
+        } else  {
+          result += '<span>'+ arr[2] +'</span>'
+        }
+        return result;
+      }
+
+      function splitDigits (val,label, length){
+         var result = "";
+          var slicer = Math.floor(val).toString();
+
+          if (val < 10) {
+            slicer = '0' + slicer;
+          }
+
+          if (slicer && slicer.length) {
+            for (var i=0; i<slicer.length; i++) {
+              result += "<span>" + slicer[i] + "</span>";
+              // result += '<span>${slicer[i]}</span>';
+            }
+          }
+          result += '<div>'+ label +'</div>'
+         
+          return result;
+      }
+
+      function countMe () {
+        duration = moment.duration(duration - interval, 'milliseconds');
+        days.html(splitByDigits (duration.days(), names[0]));
+        hours.html(splitDigits (duration.asHours(), 'ч.')); //length
+        minuts.html(splitDigits (duration.minutes(), 'мин.'));
+        seconds.html(splitDigits (duration.seconds(), 'сек.'));
+      }
+
+      countMe ();
+
+      
+      setInterval(function(){
+        countMe ()
+      }, interval);
+
+      $('.c-countdown-newindex').addClass('active')
+    })();
+  </script>
+
+  <script src="javascripts/app.min.js"></script>
+</body>
+
+</html>

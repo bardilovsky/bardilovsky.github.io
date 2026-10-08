@@ -1,0 +1,12 @@
+.btn-disabled {
+	background-color: #F2AF78;
+	pointer-events: none;
+}
+
+.btn-no-bg {
+	background-image: none;
+}
+
+.fa {
+	color: white;
+}
