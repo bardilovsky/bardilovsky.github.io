@@ -318,6 +318,25 @@
         margin-bottom: 8px;
       }
 
+      /* Облачко-описание для пунктов списка */
+      .spoiler-text .level-note {
+        margin: 8px 0 4px;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid #bfe4dd;
+        border-radius: 14px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      }
+
+      .spoiler-text .level-note p {
+        margin: 0 0 4px;
+        font-size: 0.95em;
+      }
+
+      .spoiler-text .level-note p:last-child {
+        margin-bottom: 0;
+      }
+
       .spoiler-text hr {
         border: 0;
         border-top: 1px solid #9fd8d0;
@@ -613,20 +632,29 @@
                           <li>
                             Онлайн-тренажеры по алгоритмам:
                             <ul class="level-4">
-                              <li>
-                                «Исполнитель Ам-Ням»
-                                <ul class="level-5">
-                                  <li><a href="hourofcode/2014/ru/index.html" target="_blank">Онлайн-тренажёр «Исполнитель Ам-Ням»</a></li>
-                                  <li><a href="hourofcode/hoc2014.html" target="_blank">Методические и информационные материалы для подготовки и проведения урока</a></li>
-                                </ul>
-                              </li>
+                            
                               <li>
                                 «Исполнитель Искатель Сокровищ»
                                 <ul class="level-5">
-                                  <li><a href="hourofcode/treasurehunter.html" target="_blank">Онлайн-тренажёр «Исполнитель Искатель Сокровищ»</a></li>
+                                  <li><a href="hourofcode/treasurehunter.html" target="_blank"><strong>Онлайн-тренажёр «Исполнитель Искатель Сокровищ»</strong></a></li>
+                                  <div class="level-note">
+                                    <p><strong>Начальный уровень:</strong> выполнить задания 1–7 без сбора драгоценного камня</p>
+                                    <p><strong>Средний уровень:</strong> выполнить задания 1–7 со сбором драгоценного камня</p>
+                                    <p><strong>Повышенный уровень:</strong> выполнить задания 8–11 со сбором драгоценного камня</p>
+                                    <p>Тренажер следует запускать только с персонального компьютера!</p>
+                                  </div>                                  
                                   <li><a href="hourofcode/hoc2015.html" target="_blank">Методические и информационные материалы для подготовки и проведения урока</a></li>
                                 </ul>
                               </li>
+                            
+                              <li>
+                                «Исполнитель Ам-Ням»
+                                 <ul class="level-5">
+                                  <li><a href="hourofcode/2014/ru/index.html" target="_blank"><strong>Онлайн-тренажёр «Исполнитель Ам-Ням»</strong></a></li>
+                                  <li><a href="hourofcode/hoc2014.html" target="_blank">Методические и информационные материалы для подготовки и проведения урока</a></li>
+                                </ul>                        
+                              </li>
+                              
                             </ul>
                           </li>
                         </ul>
