@@ -962,7 +962,7 @@ function xc() {
         b = G,
         c = zc,
         d = wc() + '<table width="100%"><tr><td><h1>',
-        e = '<span id="title"><a href="../../hoc2014.html"><img style ="height: 108px;" src="maze/logo.png"></a></span>';
+        e = '<span id="title"><a href="/"><img style ="height: 108px;" src="maze/logo.png"></a></span>';
 //    e = '<span id="title">' + (Ac ? '<a href="index.html?lang=' + mc(a) + '">' : '<a href="./?lang=' + mc(a) + '">') + "Blockly Games</a> : " + mc("\u041b\u0430\u0431\u0438\u0440\u0438\u043d\u0442") + "</span>";
     d += e;
 //    c = "&skin=" + mc(c);
